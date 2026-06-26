@@ -1,0 +1,42 @@
+.contenedor-formulario { 
+    max-width: 500px; 
+    margin: 0 auto; 
+    padding: 20px; 
+}
+
+.contenedor-volver { 
+    text-align: center; 
+    margin-bottom: 10px; 
+}
+
+.grupo-selector, .contenedor-selector { 
+    margin-bottom: 15px; 
+}
+
+.label-selector { 
+    display: block; 
+    margin-bottom: 5px; 
+    font-weight: bold; 
+}
+
+.select-estilo { 
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+.tarjeta-medico {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.tarjeta-titulo { 
+    margin-top: 0; 
+}
+
+.texto-centrado { 
+    text-align: center; 
+}

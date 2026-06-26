@@ -1,0 +1,17 @@
+[
+    { "idPaciente": "pac-001", "cedula": "1301234567", "nombre": "Juan", "apellido": "Pérez", "email": "juan.perez@email.com", "telefono": "0999123456" },
+    { "idPaciente": "pac-002", "cedula": "1710987654", "nombre": "María", "apellido": "González", "email": "maria.gonzalez@email.com", "telefono": "0988234567" },
+    { "idPaciente": "pac-003", "cedula": "0923456789", "nombre": "Pedro", "apellido": "Zambrano", "email": "pedro.zambrano@email.com", "telefono": "0977345678" },
+    { "idPaciente": "pac-004", "cedula": "1312345678", "nombre": "Ana", "apellido": "Loor", "email": "ana.loor@email.com", "telefono": "0966456789" },
+    { "idPaciente": "pac-005", "cedula": "1723456789", "nombre": "Carlos", "apellido": "Vaca", "email": "carlos.vaca@email.com", "telefono": "0955567890" },
+    { "idPaciente": "pac-006", "cedula": "0109876543", "nombre": "Elena", "apellido": "Sánchez", "email": "elena.sanchez@email.com", "telefono": "0944678901" },
+    { "idPaciente": "pac-007", "cedula": "0912345678", "nombre": "Luis", "apellido": "Mendoza", "email": "luis.mendoza@email.com", "telefono": "0933789012" },
+    { "idPaciente": "pac-008", "cedula": "1709876543", "nombre": "Sofía", "apellido": "Ortega", "email": "sofia.ortega@email.com", "telefono": "0922890123" },
+    { "idPaciente": "pac-009", "cedula": "1105556667", "nombre": "Ricardo", "apellido": "Silva", "email": "ricardo.silva@email.com", "telefono": "0911901234" },
+    { "idPaciente": "pac-010", "cedula": "1804445556", "nombre": "Laura", "apellido": "Rivas", "email": "laura.rivas@email.com", "telefono": "0900012345" },
+    { "idPaciente": "pac-011", "cedula": "1003334445", "nombre": "Fernando", "apellido": "Terán", "email": "fernando.teran@email.com", "telefono": "0998112233" },
+    { "idPaciente": "pac-012", "cedula": "0702223334", "nombre": "Isabel", "apellido": "Cueva", "email": "isabel.cueva@email.com", "telefono": "0987223344" },
+    { "idPaciente": "pac-013", "cedula": "2301112223", "nombre": "Andrés", "apellido": "Viteri", "email": "andres.viteri@email.com", "telefono": "0976334455" },
+    { "idPaciente": "pac-014", "cedula": "1309998887", "nombre": "Carmen", "apellido": "Roldán", "email": "carmen.roldan@email.com", "telefono": "0965445566" },
+    { "idPaciente": "pac-015", "cedula": "0608887776", "nombre": "Jorge", "apellido": "Andrade", "email": "jorge.andrade@email.com", "telefono": "0954556677" }
+]

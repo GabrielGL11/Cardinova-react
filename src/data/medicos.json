@@ -1,0 +1,137 @@
+[
+  {
+    "idMedico": "med-001",
+    "nombre": "Dr. Carlos Rodríguez",
+    "especialidad": "Cardiología",
+    "ciudad": "Manta",
+    "hospital": "Hospital Central",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
+    "diasDisponibles": ["lunes", "miercoles", "viernes"]
+    },
+    {
+    "idMedico": "med-002",
+    "nombre": "Dra. María Gómez",
+    "especialidad": "Pediatría",
+    "ciudad": "Manta",
+    "hospital": "Clínica del Sol",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "14:00", "14:20", "14:40", "15:00", "15:20", "15:40", "16:00", "16:20", "16:40"],
+    "diasDisponibles": ["martes", "jueves"]
+    },
+    {
+    "idMedico": "med-003",
+    "nombre": "Dr. Luis Zambrano",
+    "especialidad": "Medicina General",
+    "ciudad": "Manta",
+    "hospital": "Centro Médico Manta",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves", "sabado"]
+    },
+    {
+    "idMedico": "med-004",
+    "nombre": "Dra. Elena Vaca",
+    "especialidad": "Dermatología",
+    "ciudad": "Quito",
+    "hospital": "Hospital Metropolitano",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-005",
+    "nombre": "Dr. Roberto Paz",
+    "especialidad": "Traumatología",
+    "ciudad": "Guayaquil",
+    "hospital": "Clínica Kennedy",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "14:00", "14:20", "14:40", "15:00", "15:20", "15:40", "16:00", "16:20", "16:40"],
+    "diasDisponibles": ["lunes", "miercoles", "viernes", "sabado"]
+    },
+    {
+    "idMedico": "med-006",
+    "nombre": "Dra. Ana López",
+    "especialidad": "Ginecología",
+    "ciudad": "Cuenca",
+    "hospital": "Hospital Santa Inés",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
+    "diasDisponibles": ["martes", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-007",
+    "nombre": "Dr. Jorge Andrade",
+    "especialidad": "Oftalmología",
+    "ciudad": "Quito",
+    "hospital": "Clínica Pasteur",
+    "horarios": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30"],
+    "diasDisponibles": ["lunes", "miercoles", "jueves"]
+    },
+    {
+    "idMedico": "med-008",
+    "nombre": "Dra. Sofía Mora",
+    "especialidad": "Neurología",
+    "ciudad": "Guayaquil",
+    "hospital": "Hospital Alcívar",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "10:00", "10:20", "10:40"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "viernes"]
+    },
+    {
+    "idMedico": "med-009",
+    "nombre": "Dr. Pablo Ríos",
+    "especialidad": "Odontología",
+    "ciudad": "Loja",
+    "hospital": "Clínica Odontológica Loja",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30"],
+    "diasDisponibles": ["lunes", "martes", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-010",
+    "nombre": "Dra. Laura Ortega",
+    "especialidad": "Psicología",
+    "ciudad": "Ambato",
+    "hospital": "Centro de Salud Ambato",
+    "horarios": ["09:00", "09:30", "10:00","10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"],
+    "diasDisponibles": ["miercoles", "jueves", "sabado"]
+    },
+    {
+    "idMedico": "med-011",
+    "nombre": "Dr. Fernando Terán",
+    "especialidad": "Otorrinolaringología",
+    "ciudad": "Ibarra",
+    "hospital": "Hospital San Vicente de Paúl",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles"]
+    },
+    {
+    "idMedico": "med-012",
+    "nombre": "Dra. Isabel Cueva",
+    "especialidad": "Endocrinología",
+    "ciudad": "Machala",
+    "hospital": "Clínica Esperanza",
+    "horarios": ["09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "15:00", "15:20", "15:40"],
+    "diasDisponibles": ["martes", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-013",
+    "nombre": "Dr. Ricardo Silva",
+    "especialidad": "Urología",
+    "ciudad": "Santo Domingo",
+    "hospital": "Hospital Regional",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "14:00", "14:30", "15:00"],
+    "diasDisponibles": ["lunes", "miercoles", "sabado"]
+    },
+    {
+    "idMedico": "med-014",
+    "nombre": "Dra. Carmen Roldán",
+    "especialidad": "Inmunología",
+    "ciudad": "Portoviejo",
+    "hospital": "Clínica del Valle",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "14:00", "14:20", "14:40"],
+    "diasDisponibles": ["lunes", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-015",
+    "nombre": "Dr. Andrés Viteri",
+    "especialidad": "Gastroenterología",
+    "ciudad": "Riobamba",
+    "hospital": "Hospital Provincial",
+    "horarios": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00"],
+    "diasDisponibles": ["martes", "miercoles", "sabado"]
+    }
+]

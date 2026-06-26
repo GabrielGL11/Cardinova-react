@@ -1,0 +1,8 @@
+.tabla-contenedor { margin-top: 20px; }
+.tabla-citas { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.encabezado-tabla { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; }
+.celda-tabla { padding: 10px; text-align: left; }
+.fila-tabla { border-bottom: 1px solid #dee2e6; }
+.badge-estado { padding: 4px 8px; border-radius: 4px; background-color: #e9ecef; }
+.boton-eliminar { color: red; border: none; background: none; cursor: pointer; padding: 5px; }
+.texto-centrado { text-align: center; }
