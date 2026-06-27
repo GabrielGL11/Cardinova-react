@@ -1,0 +1,29 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--color-nav); 
+    color: white;
+}
+
+.nav-links ul {
+    list-style: none; 
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-family: var(--font-nav);
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--color-nav);
+    color: white;
+}

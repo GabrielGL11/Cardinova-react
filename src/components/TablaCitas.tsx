@@ -4,12 +4,14 @@ import '../styles/TablaCitas.css';
 interface Props {
     citas: Cita[];
     onEliminar?: (id: string) => void;
+    onEditarFecha?: (id: string, nuevaFecha: string) => void; 
 }
 
-export const TablaCitas = ({ citas, onEliminar }: Props) => {
+export const TablaCitas = ({ citas, onEliminar, onEditarFecha }: Props) => {
     return (
         <div className="tabla-contenedor">
-            <h3>📋 Citas Registradas</h3>
+            <h3>📋 Mis Registros</h3>
+            
             {citas.length === 0 ? (
                 <p>No tienes citas programadas.</p>
             ) : (
@@ -24,9 +26,21 @@ export const TablaCitas = ({ citas, onEliminar }: Props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {citas.map((cita) => (
-                            <tr key={cita.idCita || Math.random()} className="fila-tabla">
-                                <td className="celda-tabla">{cita.fecha}</td>
+                        {citas.map((cita, index) => (
+                            <tr key={cita.idCita || index} className="fila-tabla">
+                                <td className="celda-tabla">
+                                    {onEditarFecha ? (
+                                        <input 
+                                            type="date" 
+                                            defaultValue={cita.fecha}
+                                            onChange={(e) => onEditarFecha(cita.idCita!, e.target.value)}
+                                            className="input-fecha-tabla"
+                                            aria-label="Cambiar fecha de la cita"
+                                        />
+                                    ) : (
+                                        cita.fecha
+                                    )}
+                                </td>
                                 <td className="celda-tabla">{cita.hora}</td>
                                 <td className="celda-tabla">{cita.tipoAtencion}</td>
                                 <td className="celda-tabla">
@@ -35,6 +49,7 @@ export const TablaCitas = ({ citas, onEliminar }: Props) => {
                                 <td className="celda-tabla texto-centrado">
                                     {onEliminar && cita.idCita && (
                                         <button 
+                                            type="button" 
                                             className="boton-eliminar"
                                             onClick={() => onEliminar(cita.idCita!)}
                                             aria-label="Eliminar cita"

@@ -22,3 +22,5 @@ export const Footer = () => {
         </footer>
     );
 };
+
+import '../styles/Layout.css';

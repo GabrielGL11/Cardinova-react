@@ -10,6 +10,7 @@ export const Navbar = () => {
                         <li><Link to="/login">Iniciar Sesión</Link></li>
                         <li><Link to="/">Inicio</Link></li>
                         <li><Link to="/agendamiento">Agendar Cita</Link></li>
+                        <li><Link to="/mis-registros">Mis Registros</Link></li>
                         <li><Link to="/cita">Cita Médica</Link></li>
                         <li><Link to="/recomendacion">Recomendaciones</Link></li>
                         <li><Link to="/sugerencias">Sugerencias</Link></li>
@@ -22,3 +23,5 @@ export const Navbar = () => {
         </header>
     );
 };
+
+import '../styles/Layout.css';
