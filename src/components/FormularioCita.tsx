@@ -44,7 +44,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     };
 
     const horariosDisponibles = medico?.horarios.filter(h => 
-        !citas.some(c => c.idMedico === medico.idMedico && c.fecha === fecha && c.hora === h && c.estado === 'Programada')
+        !citas.some(c => c.idMedico === medico.idMedico && c.fecha === fecha && c.hora === h && c.estado !== 'Cancelada')
     ) || [];
 
     const handleBuscarPaciente = (cedula: string) => {
@@ -60,6 +60,18 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
         if (!telefonoValido) return alert("El teléfono debe tener 10 dígitos.");
         if (paciente.email === '' && paciente.telefono === '') return alert("Ingrese email o teléfono.");
         if (!paciente.nombre || !paciente.apellido) return alert("El nombre y apellido del paciente son obligatorios.");
+
+        const citaDuplicada = citas.find(c => 
+            c.idMedico === medico?.idMedico && 
+            c.fecha === fecha && 
+            c.hora === hora && 
+            c.estado !== 'Cancelada'
+        );
+
+        if (citaDuplicada) {
+            alert("¡Error! Ya existe una cita programada para este médico en este horario.");
+            return;
+        }
 
         if (medico && fecha && hora) {
             onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo, tipoAtencion, estado: 'Programada', medico, paciente} });
@@ -79,7 +91,12 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                     {esp && <SelectorPaso label="Ciudad" opciones={obtenerCiudades(esp)} valor={ciu} onChange={(v) => { setCiu(v); setHosp(''); setMedico(null); }} />}
                     {ciu && <SelectorPaso label="Hospital" opciones={obtenerHospitales(esp, ciu)} valor={hosp} onChange={(v) => { setHosp(v); setMedico(null); }} />}
                     {hosp && <SelectorPaso label="Médico" opciones={medicosDisponibles.map(m => m.nombre)} valor={medico?.nombre || ''} onChange={(n) => setMedico(medicosDisponibles.find(m => m.nombre === n) || null)} />}
-                    {medico && <div className="tarjeta-medico"><TarjetaMedico medico={medico} /><button type="button" className="boton-registro" onClick={() => setPaso(2)}>Continuar</button></div>}
+                    {medico && (
+                        <div className="tarjeta-medico">
+                            <TarjetaMedico medico={medico} />
+                            <button type="button" className="boton-continuar-paso1" onClick={() => setPaso(2)}>Continuar</button>
+                        </div>
+                    )}
                 </>
             )}
             
@@ -109,8 +126,8 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                     <textarea aria-label="Motivo" placeholder="Motivo" value={motivo} onChange={(e) => setMotivo(e.target.value)} />
                     
                     <div className="grupo-botones">
-                        <button type="button" onClick={() => setPaso(1)}>Atrás</button>
-                        <button type="button" onClick={() => fecha && hora ? setPaso(3) : alert("Complete fecha y hora")}>Siguiente</button>
+                        <button type="button" className="boton-volver" onClick={() => setPaso(1)}>Atrás</button>
+                        <button type="button" className="boton-registro" onClick={() => fecha && hora ? setPaso(3) : alert("Complete fecha y hora")}>Siguiente</button>
                     </div>
                 </>
             )}
@@ -125,8 +142,8 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                     <input type="tel" placeholder="Teléfono" value={paciente.telefono} onChange={(e) => setPaciente({...paciente, telefono: e.target.value})} />
                     
                     <div className="grupo-botones">
-                        <button type="button" onClick={() => setPaso(2)}>Atrás</button>
-                        <button type="button" onClick={handleGuardar}>Finalizar Registro</button>
+                        <button type="button" className="boton-volver" onClick={() => setPaso(2)}>Atrás</button>
+                        <button type="button" className="boton-registro" onClick={handleGuardar}>Finalizar Registro</button>
                     </div>
                 </>
             )}

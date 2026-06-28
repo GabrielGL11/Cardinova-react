@@ -133,5 +133,140 @@
     "hospital": "Hospital Provincial",
     "horarios": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00"],
     "diasDisponibles": ["martes", "miercoles", "sabado"]
-    }
+    },
+    {
+    "idMedico": "med-016",
+    "nombre": "Dr. Juan Pérez",
+    "especialidad": "Cardiología",
+    "ciudad": "Quito",
+    "hospital": "Hospital Metropolitano",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-017",
+    "nombre": "Dra. Lucía Méndez",
+    "especialidad": "Pediatría",
+    "ciudad": "Guayaquil",
+    "hospital": "Clínica Guayaquil",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40"],
+    "diasDisponibles": ["lunes", "miercoles", "viernes", "sabado"]
+    },
+    {
+    "idMedico": "med-018",
+    "nombre": "Dr. Mario Torres",
+    "especialidad": "Medicina General",
+    "ciudad": "Cuenca",
+    "hospital": "Hospital del Río",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"]
+    },
+    {
+    "idMedico": "med-019",
+    "nombre": "Dra. Patricia Valle",
+    "especialidad": "Dermatología",
+    "ciudad": "Manta",
+    "hospital": "Clínica del Sol",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-020",
+    "nombre": "Dr. Esteban Ruiz",
+    "especialidad": "Traumatología",
+    "ciudad": "Ambato",
+    "hospital": "Hospital Ambato",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "10:00", "10:20", "10:40"],
+    "diasDisponibles": ["martes", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-021",
+    "nombre": "Dra. Ximena Castro",
+    "especialidad": "Ginecología",
+    "ciudad": "Loja",
+    "hospital": "Clínica Santa Cecilia",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "miercoles", "viernes", "sabado"]
+    },
+    {
+    "idMedico": "med-022",
+    "nombre": "Dr. Gabriel Vera",
+    "especialidad": "Oftalmología",
+    "ciudad": "Ibarra",
+    "hospital": "Centro Oftalmológico Ibarra",
+    "horarios": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves"]
+    },
+    {
+    "idMedico": "med-023",
+    "nombre": "Dra. Cecilia Paz",
+    "especialidad": "Neurología",
+    "ciudad": "Machala",
+    "hospital": "Hospital IESS Machala",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "10:00", "10:20"],
+    "diasDisponibles": ["martes", "jueves", "sabado"]
+    },
+    {
+    "idMedico": "med-024",
+    "nombre": "Dr. Hugo Salinas",
+    "especialidad": "Odontología",
+    "ciudad": "Portoviejo",
+    "hospital": "Clínica Dental del Pacífico",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-025",
+    "nombre": "Dra. Natalia Solis",
+    "especialidad": "Psicología",
+    "ciudad": "Riobamba",
+    "hospital": "Centro de Salud Riobamba",
+    "horarios": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30"],
+    "diasDisponibles": ["lunes", "martes", "miercoles", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-026",
+    "nombre": "Dr. Fernando Ortiz",
+    "especialidad": "Otorrinolaringología",
+    "ciudad": "Quito",
+    "hospital": "Clínica Pichincha",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "miercoles", "viernes"]
+    },
+    {
+    "idMedico": "med-027",
+    "nombre": "Dra. Sandra Lima",
+    "especialidad": "Endocrinología",
+    "ciudad": "Guayaquil",
+    "hospital": "Hospital Alcívar",
+    "horarios": ["09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20"],
+    "diasDisponibles": ["lunes", "martes", "jueves", "sabado"]
+    },
+    {
+    "idMedico": "med-028",
+    "nombre": "Dr. Vicente León",
+    "especialidad": "Urología",
+    "ciudad": "Cuenca",
+    "hospital": "Hospital Santa Inés",
+    "horarios": ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"],
+    "diasDisponibles": ["lunes", "miercoles", "viernes"]
+    },
+    {
+    "idMedico": "med-029",
+    "nombre": "Dra. Irene Soto",
+    "especialidad": "Inmunología",
+    "ciudad": "Santo Domingo",
+    "hospital": "Clínica del Pacifico",
+    "horarios": ["08:00", "08:20", "08:40", "09:00", "09:20", "09:40", "10:00", "10:20"],
+    "diasDisponibles": ["lunes", "martes", "jueves", "viernes"]
+    },
+    {
+    "idMedico": "med-030",
+    "nombre": "Dr. Roberto Jara",
+    "especialidad": "Gastroenterología",
+    "ciudad": "Manta",
+    "hospital": "Hospital Central",
+    "horarios": ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30"],
+    "diasDisponibles": ["lunes", "miercoles", "jueves", "viernes", "sabado"]
+  }
 ]

@@ -24,18 +24,11 @@ function App() {
 
   const esDiaValido = (fechaSeleccionada: string, cita: Cita) => {
     if (!cita.medico) return false;
-    
     const [year, month, day] = fechaSeleccionada.split('-').map(Number);
     const fechaObj = new Date(year, month - 1, day);
-    
     const dia = fechaObj.toLocaleDateString('es-ES', { weekday: 'long' });
-    
-    const normalizar = (texto: string) => 
-        texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
-    const diaNormalizado = normalizar(dia);
-    
-    return cita.medico.diasDisponibles.some(d => normalizar(d) === diaNormalizado);
+    const normalizar = (texto: string) => texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    return cita.medico.diasDisponibles.some(d => normalizar(d) === normalizar(dia));
   };
 
   const getHorariosDisponibles = (cita: Cita) => {
@@ -51,17 +44,13 @@ function App() {
     );
   };
 
-  const agregarCita = (nuevaCita: Cita) => {
-    setCitas([...citas, nuevaCita]);
-  };
+  const agregarCita = (nuevaCita: Cita) => setCitas([...citas, nuevaCita]);
 
   const actualizarEstado = (id: string, nuevoEstado: 'Programada' | 'Cancelada' | 'Completada') => {
     setCitas(citas.map(c => c.idCita === id ? { ...c, estado: nuevoEstado } : c));
   };
 
-  const manejarEdicion = (cita: Cita) => {
-    setCitaEditando(cita);
-  };
+  const manejarEdicion = (cita: Cita) => setCitaEditando(cita);
 
   const guardarEdicion = () => {
     if (citaEditando) {
@@ -71,11 +60,20 @@ function App() {
   };
 
   const manejarVerDetalles = (cita: Cita) => {
-    const nombrePaciente = cita.paciente ? `${cita.paciente.nombre} ${cita.paciente.apellido}` : "No disponible";
-    const nombreMedico = cita.medico?.nombre || "No disponible";
-    const especialidad = cita.medico?.especialidad || "No disponible";
-    const hospital = cita.medico?.hospital || "No disponible";
-    alert(`Detalles de la cita:\nPaciente: ${nombrePaciente}\nMédico: ${nombreMedico}\nEspecialidad: ${especialidad}\nHospital: ${hospital}\nMotivo: ${cita.motivo}`);
+    const paciente = cita.paciente ? `${cita.paciente.nombre} ${cita.paciente.apellido}` : "No disponible";
+    const ciudad = cita.medico?.ciudad || "No especificada";
+    const hospital = cita.medico?.hospital || "No especificado";
+
+    alert(
+      `Detalles de la cita:\n` +
+      `Paciente: ${paciente}\n` +
+      `Médico: ${cita.medico?.nombre || "N/A"}\n` +
+      `Especialidad: ${cita.medico?.especialidad || "N/A"}\n` +
+      `Ciudad: ${ciudad}\n` +
+      `Hospital: ${hospital}\n` +
+      `Estado: ${cita.estado}\n` +
+      `Motivo: ${cita.motivo}`
+    );
   };
 
   return (
@@ -100,31 +98,37 @@ function App() {
             <div className="modal-overlay">
               <div className="modal-contenido">
                 <h3>Editar Cita</h3>
-                <p>Paciente: {citaEditando.paciente?.nombre} {citaEditando.paciente?.apellido}</p>
-                <p><small>Médico atiende: {citaEditando.medico?.diasDisponibles.join(', ')}</small></p>
                 
                 <div className="grupo-selector">
                     <label htmlFor="editFecha">Fecha:</label>
-                    <input id="editFecha" type="date" value={citaEditando.fecha} onChange={(e) => {
-                        const val = e.target.value;
-                        if (esDiaValido(val, citaEditando)) {
-                            setCitaEditando({...citaEditando, fecha: val});
-                        } else {
-                            alert("Día no válido para este médico.");
-                        }
-                    }} />
+                    <input 
+                        id="editFecha"
+                        type="date" 
+                        value={citaEditando.fecha} 
+                        onChange={(e) => {
+                            if (esDiaValido(e.target.value, citaEditando)) {
+                                setCitaEditando({...citaEditando, fecha: e.target.value});
+                            } else {
+                                alert("Día no válido para este médico.");
+                            }
+                        }} 
+                    />
                 </div>
                 
                 <div className="grupo-selector">
                     <label htmlFor="editHora">Hora:</label>
-                    <select id="editHora" aria-label="Seleccione la hora de la cita" value={citaEditando.hora} onChange={(e) => setCitaEditando({...citaEditando, hora: e.target.value})}>
+                    <select 
+                        id="editHora"
+                        value={citaEditando.hora} 
+                        onChange={(e) => setCitaEditando({...citaEditando, hora: e.target.value})}
+                    >
                         {getHorariosDisponibles(citaEditando).map(h => <option key={h} value={h}>{h}</option>)}
                     </select>
                 </div>
 
                 <div className="contenedor-botones">
-                    <button className="boton-registro" onClick={guardarEdicion}>Guardar Cambios</button>
-                    <button className="boton-registro" onClick={() => setCitaEditando(null)}>Cancelar</button>
+                    <button type="button" className="boton-registro" onClick={guardarEdicion}>Guardar Cambios</button>
+                    <button type="button" className="boton-registro" onClick={() => setCitaEditando(null)}>Cancelar</button>
                 </div>
               </div>
             </div>

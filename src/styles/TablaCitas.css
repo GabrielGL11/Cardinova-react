@@ -6,3 +6,4 @@
 .badge-estado { padding: 4px 8px; border-radius: 4px; background-color: #e9ecef; }
 .boton-eliminar { color: red; border: none; background: none; cursor: pointer; padding: 5px; }
 .texto-centrado { text-align: center; }
+.estado-finalizado {font-size: 0.8rem; color: #999; font-style: italic; margin-left: 5px; }
