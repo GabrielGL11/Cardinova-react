@@ -11,6 +11,8 @@ interface PropsFormulario {
     citas: Cita[];
 }
 
+// -- COMPONENTE FORMULARIOCITA --
+// Gestiona el proceso de agendamiento médico mediante un flujo de 3 pasos (Selección, Detalles y Datos del Paciente)
 export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     const [esp, setEsp] = useState('');
     const [ciu, setCiu] = useState('');
@@ -18,17 +20,19 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     const [medico, setMedico] = useState<Medico | null>(null);
     const [paso, setPaso] = useState(1);
 
+    // Estados para los datos de la cita y el paciente
     const [motivo, setMotivo] = useState('');
     const [fecha, setFecha] = useState('');
     const [hora, setHora] = useState('');
     const [tipoAtencion, setTipoAtencion] = useState<'Presencial' | 'Virtual'>('Presencial');
-
     const [paciente, setPaciente] = useState<Paciente>({
         idPaciente: '', cedula: '', nombre: '', apellido: '', email: '', telefono: ''
     });
 
+    // Obtiene la lista de médicos basándose en los filtros aplicados
     const medicosDisponibles = obtenerMedicosFiltrados(esp, ciu, hosp);
 
+    // Valida si la fecha seleccionada corresponde a un día de atención del médico
     const esDiaValido = (fechaSeleccionada: string) => {
         if (!medico) return false;
         
@@ -43,15 +47,18 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
         return medico.diasDisponibles.some(d => normalizar(d) === normalizar(dia));
     };
 
+    // Filtra los horarios que ya están ocupados por otras citas activas
     const horariosDisponibles = medico?.horarios.filter(h => 
         !citas.some(c => c.idMedico === medico.idMedico && c.fecha === fecha && c.hora === h && c.estado !== 'Cancelada')
     ) || [];
 
+    // Busca si el paciente ya existe en los registros mediante su número de cédula
     const handleBuscarPaciente = (cedula: string) => {
         const encontrado = pacientesData.find(p => p.cedula === cedula);
         setPaciente(encontrado ? { ...encontrado } : { idPaciente: Date.now().toString(), cedula, nombre: '', apellido: '', email: '', telefono: '' });
     };
 
+    // Valida datos, verifica duplicados y registra la nueva cita
     const handleGuardar = () => {
         const emailValido = paciente.email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paciente.email);
         const telefonoValido = paciente.telefono === '' || /^\d{10}$/.test(paciente.telefono);
@@ -85,6 +92,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     return (
         <div className="contenedor-formulario">
             <h1>Agendamiento Médico</h1>
+            {/* Paso 1: Selección de Especialidad, Ciudad, Hospital y Médico */}
             {paso === 1 && (
                 <>
                     <SelectorPaso label="Especialidad" opciones={obtenerEspecialidades()} valor={esp} onChange={(v) => { setEsp(v); setCiu(''); setHosp(''); setMedico(null); }} />
@@ -100,6 +108,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                 </>
             )}
             
+            {/* Paso 2: Selección de Fecha, Hora, Tipo de atención y motivo */}
             {paso === 2 && (
                 <>
                     <h3>Detalles de la Cita</h3>
@@ -132,6 +141,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                 </>
             )}
 
+            {/* Paso 3: Registro de datos personales del paciente */}
             {paso === 3 && (
                 <>
                     <h3>Datos del Paciente</h3>

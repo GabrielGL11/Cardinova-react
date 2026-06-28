@@ -1,6 +1,7 @@
 import { type Medico } from '../lib/tipos';
 import '../styles/FormularioCita.css';
 
+// Muestra un resumen visual de la información del médico seleccionado
 export const TarjetaMedico = ({ medico }: { medico: Medico }) => (
     <div className="tarjeta-medico">
         <h4 className="tarjeta-titulo">Médico Seleccionado:</h4>

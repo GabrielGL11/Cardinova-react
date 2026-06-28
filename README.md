@@ -1,75 +1,76 @@
-# React + TypeScript + Vite
+# Sistema de Agendamiento Médico - Cardinova
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web desarrollada para la gestión y el agendamiento de citas médicas. El sistema permite filtrar médicos por especialidad, gestionar el estado de las citas en tiempo real y registrar nuevos pacientes mediante una interfaz sencilla e intuitiva.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tecnologías utilizadas
 
-## React Compiler
+* **React**: Biblioteca principal para la construcción de la interfaz de usuario.
+* **TypeScript**: Proporciona tipado estático para mejorar la seguridad y mantenibilidad del código.
+* **Vite**: Herramienta de desarrollo rápida para proyectos React.
+* **React Router**: Permite la navegación entre las diferentes vistas de la aplicación.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📂 Estructura del proyecto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+El proyecto está organizado para mantener una separación clara entre la lógica de negocio, los datos y la interfaz.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+src/
+│── components/    # Componentes reutilizables de la aplicación
+│── data/          # Archivos JSON utilizados como base de datos local
+│── lib/           # Interfaces, tipos y funciones auxiliares
+│── styles/        # Archivos CSS organizados por componente
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Descripción de las carpetas
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+* **`src/components/`**
+  Contiene los principales componentes de la aplicación, como `Navbar`, `FormularioCita`, `MisRegistros`, `TablaCitas`, entre otros. Todos están desarrollados con **React + TypeScript** (`.tsx`).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* **`src/data/`**
+  Almacena los archivos JSON que simulan una base de datos local para médicos, pacientes y citas.
 
+* **`src/lib/`**
+  Incluye las interfaces, tipos de datos y funciones auxiliares utilizadas por la aplicación.
+
+* **`src/styles/`**
+  Contiene las hojas de estilo CSS organizadas por componente para mantener una mejor estructura del proyecto.
+
+---
+
+## ✨ Características implementadas
+
+* 📅 **Agendamiento de citas en tres pasos**, permitiendo seleccionar especialidad, médico y horario antes de confirmar la cita.
+* 🔍 **Filtro por especialidad médica** en la sección **Mis Registros**, facilitando la búsqueda de citas.
+* 🏥 **Visualización completa de la información del médico**, incluyendo ciudad y hospital.
+* 📄 **Código documentado**, utilizando comentarios estructurados para facilitar el mantenimiento y la comprensión del proyecto.
+* 🔄 **Actualización dinámica del estado de las citas**, reflejando los cambios en tiempo real dentro de la aplicación.
+
+---
+
+## ⚙️ Instalación y ejecución
+
+### 1. Instalar las dependencias
+
+```bash
+npm install
 ```
+
+### 2. Iniciar el servidor de desarrollo
+
+```bash
+npm run dev
+```
+
+### 3. Abrir la aplicación
+
+Una vez iniciado el servidor, abre tu navegador y accede a la dirección mostrada en la consola, normalmente:
+
+```text
+http://localhost:5173
+```
+
+> **Nota:** El puerto puede variar dependiendo de si el puerto predeterminado ya está siendo utilizado.

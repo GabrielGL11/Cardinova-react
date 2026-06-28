@@ -7,7 +7,8 @@ interface Props {
     onEditar: (cita: Cita) => void;
     onVerDetalles: (cita: Cita) => void;
 }
-
+// -- COMPONENTE TABLACITAS --
+// Renderiza el listado de citas en formato tabla y gestiona las acciones de cada fila
 export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: Props) => {
     return (
         <table className="tabla-citas">
