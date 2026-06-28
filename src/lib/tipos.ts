@@ -26,6 +26,8 @@ export interface Cita {
     motivo: string;
     tipoAtencion: 'Presencial' | 'Virtual';
     estado?: 'Programada' | 'Cancelada' | 'Completada';
+    medico?: Medico; 
+    paciente?: Paciente;
 }
 export interface FiltrosBusqueda {
     especialidad: string;

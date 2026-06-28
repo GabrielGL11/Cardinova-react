@@ -3,11 +3,12 @@ import '../styles/TablaCitas.css';
 
 interface Props {
     citas: Cita[];
-    onEliminar?: (id: string) => void;
-    onEditarFecha?: (id: string, nuevaFecha: string) => void; 
+    onCambiarEstado: (id: string, nuevoEstado: 'Programada' | 'Cancelada' | 'Completada') => void;
+    onEditar: (cita: Cita) => void;    
+    onVerDetalles: (cita: Cita) => void; 
 }
 
-export const TablaCitas = ({ citas, onEliminar, onEditarFecha }: Props) => {
+export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: Props) => {
     return (
         <div className="tabla-contenedor">
             <h3>📋 Mis Registros</h3>
@@ -18,46 +19,37 @@ export const TablaCitas = ({ citas, onEliminar, onEditarFecha }: Props) => {
                 <table className="tabla-citas">
                     <thead>
                         <tr className="encabezado-tabla">
-                            <th className="celda-tabla">Fecha</th>
-                            <th className="celda-tabla">Hora</th>
-                            <th className="celda-tabla">Tipo</th>
-                            <th className="celda-tabla">Estado</th>
-                            <th className="celda-tabla texto-centrado">Acción</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th className="texto-centrado">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {citas.map((cita, index) => (
-                            <tr key={cita.idCita || index} className="fila-tabla">
-                                <td className="celda-tabla">
-                                    {onEditarFecha ? (
-                                        <input 
-                                            type="date" 
-                                            defaultValue={cita.fecha}
-                                            onChange={(e) => onEditarFecha(cita.idCita!, e.target.value)}
-                                            className="input-fecha-tabla"
-                                            aria-label="Cambiar fecha de la cita"
-                                        />
-                                    ) : (
-                                        cita.fecha
-                                    )}
+                        {citas.map((cita) => (
+                            <tr key={cita.idCita} className="fila-tabla">
+                                <td>{cita.fecha}</td>
+                                <td>{cita.hora}</td>
+                                <td>{cita.tipoAtencion}</td>
+                                <td>
+                                    <span className={`badge-estado ${cita.estado?.toLowerCase()}`}>
+                                        {cita.estado}
+                                    </span>
                                 </td>
-                                <td className="celda-tabla">{cita.hora}</td>
-                                <td className="celda-tabla">{cita.tipoAtencion}</td>
-                                <td className="celda-tabla">
-                                    <span className="badge-estado">{cita.estado || 'Programada'}</span>
-                                </td>
-                                <td className="celda-tabla texto-centrado">
-                                    {onEliminar && cita.idCita && (
-                                        <button 
-                                            type="button" 
-                                            className="boton-eliminar"
-                                            onClick={() => onEliminar(cita.idCita!)}
-                                            aria-label="Eliminar cita"
-                                            title="Eliminar cita"
-                                        >
-                                            <i className="fa-solid fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    )}
+                                <td className="texto-centrado">
+                                    <div className="grupo-botones-accion">
+                                        <button type="button" onClick={() => onVerDetalles(cita)} title="Ver detalles">👁️</button>
+                                        {cita.estado === 'Programada' ? (
+                                            <>
+                                                <button type="button" onClick={() => onCambiarEstado(cita.idCita!, 'Completada')} title="Marcar como realizada">✅</button>
+                                                <button type="button" onClick={() => onEditar(cita)} title="Editar cita">✏️</button>
+                                                <button type="button" onClick={() => onCambiarEstado(cita.idCita!, 'Cancelada')} title="Cancelar cita">❌</button>
+                                            </>
+                                        ) : (
+                                            <span>Finalizado</span>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                         ))}
