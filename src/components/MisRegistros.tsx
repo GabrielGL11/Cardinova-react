@@ -10,7 +10,7 @@ interface PropsRegistros {
 
 export const MisRegistros = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: PropsRegistros) => {
     return (
-        <div className="contenedor-registros">
+        <section className="contenedor-registros">
             <h2>Mis Registros de Citas</h2>
             <TablaCitas 
                 citas={citas} 
@@ -18,6 +18,6 @@ export const MisRegistros = ({ citas, onCambiarEstado, onEditar, onVerDetalles }
                 onEditar={onEditar}
                 onVerDetalles={onVerDetalles}
             />
-        </div>
+        </section>
     );
 };

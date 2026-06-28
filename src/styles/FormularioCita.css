@@ -64,3 +64,9 @@
 .boton-volver {
     background-color: #666; 
 }
+
+.select-estilo:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
+}

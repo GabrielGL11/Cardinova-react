@@ -21,6 +21,8 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                         <tr className="encabezado-tabla">
                             <th>Fecha</th>
                             <th>Hora</th>
+                            <th>Paciente</th>    
+                            <th>Médico</th>     
                             <th>Tipo</th>
                             <th>Estado</th>
                             <th className="texto-centrado">Acciones</th>
@@ -31,6 +33,8 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                             <tr key={cita.idCita} className="fila-tabla">
                                 <td>{cita.fecha}</td>
                                 <td>{cita.hora}</td>
+                                <td>{cita.paciente?.nombre} {cita.paciente?.apellido}</td>
+                                <td>{cita.medico?.nombre}</td>
                                 <td>{cita.tipoAtencion}</td>
                                 <td>
                                     <span className={`badge-estado ${cita.estado?.toLowerCase()}`}>
@@ -42,9 +46,9 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                                         <button type="button" onClick={() => onVerDetalles(cita)} title="Ver detalles">👁️</button>
                                         {cita.estado === 'Programada' ? (
                                             <>
-                                                <button type="button" onClick={() => onCambiarEstado(cita.idCita!, 'Completada')} title="Marcar como realizada">✅</button>
-                                                <button type="button" onClick={() => onEditar(cita)} title="Editar cita">✏️</button>
-                                                <button type="button" onClick={() => onCambiarEstado(cita.idCita!, 'Cancelada')} title="Cancelar cita">❌</button>
+                                                <button type="button" onClick={() => onCambiarEstado(cita.idCita!, 'Completada')} title="Marcar como realizada" aria-label="Marcar como realizada">✅</button>
+                                                <button type="button" onClick={() => onEditar(cita)} title="Editar cita" aria-label="Editar cita">✏️</button>
+                                                <button type="button" onClick={() => onCambiarEstado(cita.idCita!, 'Cancelada')} title="Cancelar cita" aria-label="Cancelar cita">❌</button>
                                             </>
                                         ) : (
                                             <span>Finalizado</span>
