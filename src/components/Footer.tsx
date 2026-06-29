@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import '../styles/Layout.css';
 
 export const Footer = () => {
     return (
@@ -7,6 +8,7 @@ export const Footer = () => {
                 <Link to="/" className="botones">⬅ Volver al inicio</Link>
             </div>
 
+            {/* Agrupamos los iconos en un contenedor para controlarlos mejor */}
             <div className="redes">
                 <a href="https://github.com/usuario" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                     <i className="fa-brands fa-github"></i>
@@ -18,9 +20,8 @@ export const Footer = () => {
                     <i className="fa-solid fa-envelope"></i>
                 </a>
             </div>
+
             <p>&copy; 2026 · Cardinova · ULEAM · Hecho con React</p>
         </footer>
     );
 };
-
-import '../styles/Layout.css';

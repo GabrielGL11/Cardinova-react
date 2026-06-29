@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -11,19 +11,28 @@ import medicosData from './data/medicos.json';
 import pacientesData from './data/pacientes.json';
 import citasIniciales from './data/citas.json';
 
+// -- COMPONENTE APP --
+// Punto de entrada principal que orquestra la navegación, el estado global de las citas y la gestión de modales
 function App() {
-  // -- ESTADO PRINCIPAL: LISTADO DE CITAS --
-  // Carga inicial combinando datos de médicos y pacientes con las citas existentes
-  const [citas, setCitas] = useState<Cita[]>(() => {
-    return (citasIniciales as any[]).map(c => ({
+  // 1. Estado Reactivo: Carga inicial de datos crudos
+  const [citasRaw, setCitasRaw] = useState<any[]>([]);
+  const [citaEditando, setCitaEditando] = useState<Cita | null>(null);
+
+  // 2. Carga inicial: useEffect(fn, [])
+  // Se ejecuta una sola vez al montar el componente para poblar el estado inicial
+  useEffect(() => {
+    setCitasRaw(citasIniciales);
+  }, []);
+
+  // 3. Valor derivado: useMemo(f, [x])
+  // Calcula la unión de datos solo cuando citasRaw cambia, optimizando el rendimiento
+  const citas = useMemo(() => {
+    return citasRaw.map(c => ({
       ...c,
       medico: medicosData.find(m => m.idMedico === c.idMedico),
       paciente: pacientesData.find(p => p.idPaciente === c.idPaciente)
     })) as Cita[];
-  });
-
-  // -- ESTADO PARA EDICIÓN: GESTIÓN DEL MODAL --
-  const [citaEditando, setCitaEditando] = useState<Cita | null>(null);
+  }, [citasRaw]);
 
   // -- LÓGICA DE VALIDACIÓN: DÍAS HÁBILES --
   // Verifica si el día de la semana de la fecha seleccionada está entre los días disponibles del médico
@@ -52,10 +61,10 @@ function App() {
   };
 
   // -- MANEJADORES DE ESTADO (CRUD) --
-  const agregarCita = (nuevaCita: Cita) => setCitas([...citas, nuevaCita]);
+  const agregarCita = (nuevaCita: Cita) => setCitasRaw([...citasRaw, nuevaCita]);
 
   const actualizarEstado = (id: string, nuevoEstado: 'Programada' | 'Cancelada' | 'Completada') => {
-    setCitas(citas.map(c => c.idCita === id ? { ...c, estado: nuevoEstado } : c));
+    setCitasRaw(citasRaw.map(c => c.idCita === id ? { ...c, estado: nuevoEstado } : c));
   };
 
   // -- LÓGICA DE EDICIÓN --
@@ -67,7 +76,7 @@ function App() {
         alert("Por favor, seleccione una fecha y hora válidas.");
         return;
       }
-      setCitas(citas.map(c => c.idCita === citaEditando.idCita ? citaEditando : c));
+      setCitasRaw(citasRaw.map(c => c.idCita === citaEditando.idCita ? citaEditando : c));
       setCitaEditando(null);
     }
   };
@@ -94,7 +103,18 @@ function App() {
           {/* -- RUTAS DE NAVEGACIÓN -- */}
           <Routes>
             <Route path="/" element={<h1>Bienvenido a Cardinova</h1>} />
-            <Route path="/agendamiento" element={<FormularioCita onGuardar={agregarCita} citas={citas} />} />
+            
+            {/* -- COMPONENTE FORMULARIOCITA -- */}
+            {/* Gestiona el proceso de agendamiento médico mediante un flujo de 3 pasos (Selección, Detalles y Datos del Paciente) */}
+            <Route path="/agendamiento" element={
+                <>
+                    {/* Paso 1: Selección de Especialidad, Ciudad, Hospital y Médico */}
+                    {/* Paso 2: Elección de fecha y hora basada en disponibilidad */}
+                    {/* Paso 3: Ingreso de datos del paciente y motivo de consulta */}
+                    <FormularioCita onGuardar={agregarCita} citas={citas} />
+                </>
+            } />
+            
             <Route path="/mis-registros" element={
                 <MisRegistros 
                     citas={citas} 
@@ -123,7 +143,7 @@ function App() {
                             }
                         }} />
                 </div>
-                
+
                 {/* Selector de hora */}
                 <div className="grupo-selector">
                     <label htmlFor="editHora">Hora:</label>
