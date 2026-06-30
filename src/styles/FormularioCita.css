@@ -110,3 +110,48 @@ h1, h3 {
 
 .boton-continuar-paso1:hover { background-color: #0069d9; }
 .boton-continuar-paso1:active { transform: scale(0.98); }
+
+.grupo-tipo-cita {
+    margin: 15px 0;
+}
+
+.radio-group-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.radio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+    width: 100px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.radio-item:hover {
+    border-color: #aaa;
+}
+
+.radio-item:has(input:checked) {
+    background-color: #ffffff;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.radio-item input {
+    accent-color: #007bff;
+    margin-bottom: 5px;
+}
+
+.radio-item input:focus {
+    outline: none;
+    box-shadow: none;
+}

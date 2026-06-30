@@ -133,6 +133,17 @@ td {
 .filtro-container {
     margin-bottom: 15px;
 }
+.aviso-dias {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    border: 1px solid #ffeeba;
+    font-family: sans-serif;
+}
 
 @media (max-width: 768px) {
     .navbar {

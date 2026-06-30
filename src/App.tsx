@@ -130,6 +130,10 @@ function App() {
             <div className="modal-overlay">
               <div className="modal-contenido">
                 <h3>Editar Cita</h3>
+                {/* Aviso de días de atención */}
+                <div className="aviso-dias">
+                  El médico atiende: <strong>{citaEditando.medico?.diasDisponibles.join(", ")}</strong>
+                </div>
                 {/* Selector de fecha */}
                 <div className="grupo-selector">
                     <label htmlFor="editFecha">Fecha:</label>

@@ -127,10 +127,13 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                         </select>
                     )}
 
-                    <select aria-label="Tipo de atención" value={tipoAtencion} onChange={(e) => setTipoAtencion(e.target.value as 'Presencial' | 'Virtual')}>
-                        <option value="Presencial">Presencial</option>
-                        <option value="Virtual">Virtual</option>
-                    </select>
+                    <div className="grupo-tipo-cita">
+                        <label>Modalidad:</label>
+                        <div className="radio-group-container">
+                            <label className="radio-item"><input type="radio" value="Presencial" checked={tipoAtencion === 'Presencial'} onChange={(e) => setTipoAtencion(e.target.value as 'Presencial' | 'Virtual')} /> Presencial</label>
+                            <label className="radio-item"><input type="radio" value="Virtual" checked={tipoAtencion === 'Virtual'} onChange={(e) => setTipoAtencion(e.target.value as 'Presencial' | 'Virtual')} /> Virtual</label>
+                        </div>
+                    </div>
 
                     <textarea aria-label="Motivo" placeholder="Motivo" value={motivo} onChange={(e) => setMotivo(e.target.value)} />
                     
