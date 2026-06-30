@@ -60,6 +60,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
 
     // Valida datos, verifica duplicados y registra la nueva cita
     const handleGuardar = () => {
+        if (!paciente.cedula) return alert("La cédula es obligatoria.");
         const emailValido = paciente.email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paciente.email);
         const telefonoValido = paciente.telefono === '' || /^\d{10}$/.test(paciente.telefono);
         
@@ -148,7 +149,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
             {paso === 3 && (
                 <>
                     <h3>Datos del Paciente</h3>
-                    <input type="text" placeholder="Cédula" value={paciente.cedula} onChange={(e) => handleBuscarPaciente(e.target.value)} />
+                    <input type="text" placeholder="Cédula" value={paciente.cedula} onChange={(e) => handleBuscarPaciente(e.target.value)} required/>
                     <input type="text" placeholder="Nombre" value={paciente.nombre} onChange={(e) => setPaciente({...paciente, nombre: e.target.value})} required />
                     <input type="text" placeholder="Apellido" value={paciente.apellido} onChange={(e) => setPaciente({...paciente, apellido: e.target.value})} required />
                     <input type="email" placeholder="Email" value={paciente.email} onChange={(e) => setPaciente({...paciente, email: e.target.value})} />
