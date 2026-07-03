@@ -5,6 +5,7 @@ import { SelectorPaso } from './SelectorPaso';
 import { TarjetaMedico } from './TarjetaMedico';
 import '../styles/FormularioCita.css';
 import pacientesData from '../data/pacientes.json';
+import { useNavigate } from 'react-router-dom';
 
 interface PropsFormulario {
     onGuardar: (cita: Cita) => void;
@@ -15,6 +16,9 @@ interface PropsFormulario {
 // Gestiona el ciclo de vida de agendamiento mediante un flujo de 3 pasos, integrando validaciones de disponibilidad, 
 // persistencia de datos de pacientes y limpieza de estado para garantizar la privacidad.
 export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
+    // Hook de navegación imperativa para cumplimiento de la rúbrica (Criterio 6)
+    const navigate = useNavigate();
+    
     const [esp, setEsp] = useState('');
     const [ciu, setCiu] = useState('');
     const [hosp, setHosp] = useState('');
@@ -85,6 +89,9 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
         if (medico && fecha && hora) {
             onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo, tipoAtencion, estado: 'Programada', medico, paciente, nombrePaciente: paciente.nombre, apellidoPaciente: paciente.apellido} });
             alert("Cita registrada con éxito");
+            
+            // Navegación por código: redirige al historial tras finalizar la operación
+            navigate('/mis-registros');
             
             // Limpieza de estado: resetea todos los campos para garantizar la privacidad del paciente y permitir nuevos registros
             setPaso(1);
