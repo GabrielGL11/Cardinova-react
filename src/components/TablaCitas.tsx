@@ -35,7 +35,7 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                         <td>
                             <div className="contenedor-acciones">
                                 <Link 
-                                    to={`/agendamiento/${cita.idCita}`} 
+                                    to={`/mis-registros/${cita.idCita}`} 
                                     className="btn-accion" 
                                     title="Ver detalles"
                                     onClick={() => onVerDetalles(cita)}

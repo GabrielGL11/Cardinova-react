@@ -56,7 +56,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<h1>Bienvenido a Cardinova</h1>} />
           <Route path="/agendamiento" element={<FormularioCita onGuardar={agregarCita} citas={citas} />} />
-          <Route path="/agendamiento/:id" element={<DetalleCita />} />
+          <Route path="/mis-registros/:id" element={<DetalleCita />} />
           <Route path="/mis-registros" element={<MisRegistros />} />
         </Routes>
         

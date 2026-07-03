@@ -82,9 +82,24 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
         }
 
         if (medico && fecha && hora) {
-            onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo, tipoAtencion, estado: 'Programada', medico, paciente} });
+            onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo, tipoAtencion, estado: 'Programada', medico, paciente, nombrePaciente: paciente.nombre, apellidoPaciente: paciente.apellido} });
             alert("Cita registrada con éxito");
             setPaso(1);
+            setMotivo('');
+            setFecha('');
+            setHora('');
+            setMedico(null);
+            setPaciente({
+                idPaciente: '',
+                cedula: '',
+                nombre: '',
+                apellido: '',
+                email: '',
+                telefono: ''
+            });
+            setEsp('');
+            setCiu('');
+            setHosp('');
         } else {
             alert("Complete todos los campos obligatorios.");
         }

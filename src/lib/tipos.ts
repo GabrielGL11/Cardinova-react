@@ -28,6 +28,8 @@ export interface Cita {
     estado?: 'Programada' | 'Cancelada' | 'Completada';
     medico?: Medico; 
     paciente?: Paciente;
+    nombrePaciente?: string; 
+    apellidoPaciente?: string;
 }
 export interface FiltrosBusqueda {
     especialidad: string;

@@ -20,10 +20,16 @@ export const CitasProvider = ({ children }: { children: ReactNode }) => {
 
     const citas = useMemo(() => {
         return citasRaw.map(c => ({
-        ...c,
-        medico: medicosData.find(m => m.idMedico === c.idMedico),
-        paciente: pacientesData.find(p => p.idPaciente === c.idPaciente)
-    })) as Cita[];
+            ...c,
+            medico: medicosData.find(m => m.idMedico === c.idMedico),
+            // Lógica: busca en pacientesData, si no existe, construye el objeto desde los campos de la cita
+            paciente: pacientesData.find(p => p.idPaciente === c.idPaciente) ||
+                        (c.nombrePaciente ? { 
+                            idPaciente: c.idPaciente, 
+                            nombre: c.nombrePaciente,
+                            apellido: c.apellidoPaciente || '' 
+                        } : undefined)
+        })) as Cita[];
     }, [citasRaw]);
 
     const agregarCita = (nuevaCita: Cita) => setCitasRaw([...citasRaw, nuevaCita]);
@@ -34,7 +40,7 @@ export const CitasProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <CitasContext.Provider value={{ citas, agregarCita, actualizarCita, citaEditando, setCitaEditando }}>
-        {children}
+            {children}
         </CitasContext.Provider>
     );
 };
