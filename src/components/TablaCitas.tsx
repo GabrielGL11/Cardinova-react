@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { type Cita } from '../lib/tipos';
 import '../styles/TablaCitas.css';
 
@@ -7,8 +8,7 @@ interface Props {
     onEditar: (cita: Cita) => void;
     onVerDetalles: (cita: Cita) => void;
 }
-// -- COMPONENTE TABLACITAS --
-// Renderiza el listado de citas en formato tabla y gestiona las acciones de cada fila
+
 export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: Props) => {
     return (
         <table className="tabla-citas">
@@ -34,7 +34,15 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                         <td><span className={`badge-estado ${cita.estado?.toLowerCase()}`}>{cita.estado}</span></td>
                         <td>
                             <div className="contenedor-acciones">
-                                <button type="button" className="btn-accion" onClick={() => onVerDetalles(cita)} title="Ver detalles">👁️</button>
+                                <Link 
+                                    to={`/agendamiento/${cita.idCita}`} 
+                                    className="btn-accion" 
+                                    title="Ver detalles"
+                                    onClick={() => onVerDetalles(cita)}
+                                >
+                                    👁️
+                                </Link>
+                                
                                 {cita.estado === 'Programada' ? (
                                     <>
                                         <button type="button" className="btn-accion" onClick={() => onCambiarEstado(cita.idCita!, 'Completada')} title="Completar">✅</button>
