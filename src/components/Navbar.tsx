@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 
+// -- COMPONENTE NAVBAR --
+// Renderiza la barra de navegación principal, centralizando el enrutamiento de la aplicación mediante enlaces de React Router.
 export const Navbar = () => {
     return (
         <header>

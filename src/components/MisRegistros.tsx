@@ -1,32 +1,33 @@
 import { useState, useContext } from 'react';
 import { TablaCitas } from './TablaCitas';
-import { CitasContext } from './CitasContext'; // Importamos el contexto
+import { CitasContext } from './CitasContext'; 
 
 // -- COMPONENTE MISREGISTROS --
-// Gestiona la visualización del historial de citas, incluyendo la lógica de filtrado por especialidad
+// Gestiona la visualización del historial de citas, proporcionando herramientas de filtrado por especialidad
+// y la conexión con el estado global para la edición de registros.
 export const MisRegistros = () => {
-    // Obtenemos los datos y funciones desde el contexto
+    // Suscripción al estado global para acceder a la lista de citas y funciones de gestión
     const context = useContext(CitasContext);
     if (!context) return null;
     
-    // Extraemos setCitaEditando para controlar el modal de edición
+    // Extracción de las dependencias necesarias del contexto
     const { citas, actualizarCita, setCitaEditando } = context;
 
-    // Estado para controlar la especialidad seleccionada en el filtro
+    // Estado local para manejar el criterio de filtrado aplicado sobre el conjunto de citas
     const [filtroEspecialidad, setFiltroEspecialidad] = useState("Todos");
 
-    // Extrae dinámicamente las especialidades únicas de los médicos presentes en las citas
+    // Extracción dinámica de especialidades únicas para poblar el selector de filtros
     const especialidades = [
         "Todos", 
         ...Array.from(new Set(citas.map(c => c.medico?.especialidad).filter(Boolean)))
     ];
 
-    // Calcula la lista de citas a mostrar basada en el filtro seleccionado
+    // Lógica de filtrado: calcula el subconjunto de citas a renderizar según el estado del filtro
     const citasFiltradas = filtroEspecialidad === "Todos" 
         ? citas 
         : citas.filter(c => c.medico?.especialidad === filtroEspecialidad);
 
-    // Mapeo necesario para mantener compatibilidad con tu TablaCitas:
+    // Handler para delegar la actualización de estados al contexto global (manteniendo la integridad de los datos)
     const handleCambiarEstado = (id: string, nuevoEstado: 'Programada' | 'Cancelada' | 'Completada') => {
         const cita = citas.find(c => c.idCita === id);
         if (cita) actualizarCita({ ...cita, estado: nuevoEstado });
@@ -35,7 +36,8 @@ export const MisRegistros = () => {
     return (
         <div className="contenedor-registros">
             <h2>Mis Registros</h2>
-            {/* Sección del control de filtro */}
+            
+            {/* Sección de filtros: control para restringir la vista por especialidad médica */}
             <div className="filtro-container">
                 <label htmlFor="filtroEspecialidad">Filtrar por Especialidad: </label>
                 <select 
@@ -49,13 +51,14 @@ export const MisRegistros = () => {
                 </select>
             </div>
 
-            {/* Tabla que recibe las citas ya filtradas */}
+            {/* TablaCitas: componente presentacional que renderiza las instancias filtradas */}
             <TablaCitas 
                 citas={citasFiltradas} 
                 onCambiarEstado={handleCambiarEstado}
-                // AQUÍ CONECTAMOS LA EDICIÓN: al hacer clic, guardamos la cita en el contexto
+                // Conexión con el flujo de edición: inyecta la cita seleccionada al contexto de edición global
                 onEditar={(cita) => setCitaEditando(cita)}
-                onVerDetalles={(cita) => console.log(cita)}            />
+                onVerDetalles={(cita) => console.log(cita)}            
+            />
         </div>
     );
 };

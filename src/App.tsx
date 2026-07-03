@@ -9,12 +9,16 @@ import DetalleCita from './components/DetalleCita';
 import { type Cita } from './lib/tipos';
 import './App.css'; 
 
+// -- COMPONENTE APPCONTENT --
+// Actúa como el consumidor principal del contexto y orquestador de las vistas, 
+// gestionando la lógica de negocio transversal como la disponibilidad horaria y edición de registros.
 function AppContent() {
   const context = useContext(CitasContext);
   if (!context) return null;
   const { citas, agregarCita, actualizarCita, citaEditando, setCitaEditando } = context;
 
   // -- LÓGICA DE VALIDACIÓN: DÍAS HÁBILES --
+  // Verifica si la fecha seleccionada cae dentro de los días de atención configurados para el médico asignado
   const esDiaValido = (fechaSeleccionada: string, cita: Cita) => {
     if (!cita.medico) return false;
     const [year, month, day] = fechaSeleccionada.split('-').map(Number);
@@ -25,6 +29,7 @@ function AppContent() {
   };
 
   // -- LÓGICA DE HORARIOS: DISPONIBILIDAD --
+  // Filtra el catálogo de horas del médico, excluyendo aquellas ya ocupadas por citas activas en el estado global
   const getHorariosDisponibles = (cita: Cita) => {
     if (!cita.medico) return [];
     return cita.medico.horarios.filter(h => 
@@ -38,6 +43,7 @@ function AppContent() {
     );
   };
 
+  // Ejecuta la persistencia de cambios en el estado global tras validar los campos de la cita en edición
   const guardarEdicion = () => {
     if (citaEditando) {
       if (!citaEditando.fecha || !citaEditando.hora) {
@@ -53,6 +59,7 @@ function AppContent() {
     <div className="app-container">
       <Navbar />
       <main className="contenido-principal">
+        {/* Definición de rutas de navegación: vincula paths URL con componentes específicos */}
         <Routes>
           <Route path="/" element={<h1>Bienvenido a Cardinova</h1>} />
           <Route path="/agendamiento" element={<FormularioCita onGuardar={agregarCita} citas={citas} />} />
@@ -60,6 +67,7 @@ function AppContent() {
           <Route path="/mis-registros" element={<MisRegistros />} />
         </Routes>
         
+        {/* Modal de edición: renderizado condicional cuando se activa la edición de una cita existente */}
         {citaEditando && (
           <div className="modal-overlay">
             <div className="modal-contenido">
@@ -106,6 +114,8 @@ function AppContent() {
   );
 }
 
+// -- COMPONENTE APP --
+// Punto de entrada de la aplicación: envuelve el árbol de componentes con el Provider y el Router
 function App() {
   return (
     <CitasProvider>
