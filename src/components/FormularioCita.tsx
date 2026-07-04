@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner'; 
 import { type Medico, type Cita, type Paciente } from '../lib/tipos';
 import { obtenerEspecialidades, obtenerCiudades, obtenerHospitales, obtenerMedicosFiltrados } from '../lib/utilidades';
 import { SelectorPaso } from './SelectorPaso';
@@ -26,7 +27,12 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     const [paso, setPaso] = useState(1);
 
     // Estados para los datos de la cita y el paciente
-    const [motivo, setMotivo] = useState('');
+    // Se ajusta la lógica de motivo para soportar selección múltiple y exclusividad de "Otros"
+    const [motivosSeleccionados, setMotivosSeleccionados] = useState<string[]>([]);
+    const [esOtrosActivo, setEsOtrosActivo] = useState(false);
+    const [motivoOtros, setMotivoOtros] = useState('');
+    const opcionesMotivo = ["Control de Rutina", "Revisión de Exámenes", "Derivación", "Consulta por Síntomas", "Control de Tratamiento"];
+    
     const [fecha, setFecha] = useState('');
     const [hora, setHora] = useState('');
     const [tipoAtencion, setTipoAtencion] = useState<'Presencial' | 'Virtual'>('Presencial');
@@ -58,21 +64,37 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     ) || [];
 
     // Búsqueda de paciente: verifica registros existentes o inicializa un nuevo objeto con un ID temporal
-    const handleBuscarPaciente = (cedula: string) => {
-        const encontrado = pacientesData.find(p => p.cedula === cedula);
-        setPaciente(encontrado ? { ...encontrado } : { idPaciente: Date.now().toString(), cedula, nombre: '', apellido: '', email: '', telefono: '' });
+    const handleActualizarCedula = (cedula: string) => {
+        setPaciente(prev => ({ ...prev, cedula }));
+    };
+
+    // Nueva función para disparar la búsqueda al terminar de escribir (evento onBlur)
+    const buscarPaciente = () => {
+        if (!paciente.cedula) return;
+        const encontrado = pacientesData.find(p => p.cedula === paciente.cedula);
+        if (encontrado) {
+            setPaciente({ ...encontrado });
+        } else {
+            setPaciente(prev => ({ ...prev, idPaciente: Date.now().toString(), nombre: '', apellido: '' }));
+        }
     };
 
     // Registro de cita: valida datos, previene conflictos de agenda y ejecuta el guardado en el contexto global
     const handleGuardar = () => {
-        if (!paciente.cedula) return alert("La cédula es obligatoria.");
+        if (!paciente.cedula) { toast.error("Error", { description: "La cédula es obligatoria." }); return; }
+        
         const emailValido = paciente.email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paciente.email);
         const telefonoValido = paciente.telefono === '' || /^\d{10}$/.test(paciente.telefono);
         
-        if (!emailValido) return alert("Email no válido.");
-        if (!telefonoValido) return alert("El teléfono debe tener 10 dígitos.");
-        if (paciente.email === '' && paciente.telefono === '') return alert("Ingrese email o teléfono.");
-        if (!paciente.nombre || !paciente.apellido) return alert("El nombre y apellido del paciente son obligatorios.");
+        if (!emailValido) { toast.error("Error", { description: "Email no válido." }); return; }
+        if (!telefonoValido) { toast.error("Error", { description: "El teléfono debe tener 10 dígitos." }); return; }
+        if (paciente.email === '' && paciente.telefono === '') { toast.warning("Atención", { description: "Ingrese email o teléfono." }); return; }
+        if (!paciente.nombre || !paciente.apellido) { toast.error("Error", { description: "El nombre y apellido del paciente son obligatorios." }); return; }
+        
+        // Validación de motivos: Debe haber al menos una opción o un texto en "Otros"
+        if (motivosSeleccionados.length === 0 && (!esOtrosActivo || !motivoOtros)) { 
+            toast.error("Error", { description: "Seleccione un motivo o especifique en Otros." }); return; 
+        }
 
         const citaDuplicada = citas.find(c => 
             c.idMedico === medico?.idMedico && 
@@ -82,20 +104,25 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
         );
 
         if (citaDuplicada) {
-            alert("¡Error! Ya existe una cita programada para este médico en este horario.");
+            toast.error("Error", { description: "¡Ya existe una cita programada para este médico en este horario!" });
             return;
         }
 
         if (medico && fecha && hora) {
-            onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo, tipoAtencion, estado: 'Programada', medico, paciente, nombrePaciente: paciente.nombre, apellidoPaciente: paciente.apellido} });
-            alert("Cita registrada con éxito");
+            // Concatenar motivos según el modo seleccionado
+            const motivoFinal = esOtrosActivo ? `Otros: ${motivoOtros}` : motivosSeleccionados.join(", ");
             
+            onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo: motivoFinal, tipoAtencion, estado: 'Programada', medico, paciente, nombrePaciente: paciente.nombre, apellidoPaciente: paciente.apellido} });
+            
+            toast.success("Éxito", { description: "Cita registrada correctamente." });
             // Navegación por código: redirige al historial tras finalizar la operación
             navigate('/mis-registros');
             
-            // Limpieza de estado: resetea todos los campos para garantizar la privacidad del paciente y permitir nuevos registros
+            // Limpieza total de estado tras guardar
             setPaso(1);
-            setMotivo('');
+            setMotivosSeleccionados([]);
+            setEsOtrosActivo(false);
+            setMotivoOtros('');
             setFecha('');
             setHora('');
             setMedico(null);
@@ -104,7 +131,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
             setCiu('');
             setHosp('');
         } else {
-            alert("Complete todos los campos obligatorios.");
+            toast.warning("Atención", { description: "Complete todos los campos obligatorios." });
         }
     };
 
@@ -137,7 +164,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                     <input type="date" aria-label="Seleccione fecha" value={fecha} onChange={(e) => {
                         const val = e.target.value;
                         if(esDiaValido(val)) setFecha(val);
-                        else { alert("Fecha no válida. El médico no atiende ese día."); setFecha(''); }
+                        else { toast.error("Fecha no válida", { description: "El médico no atiende ese día." }); setFecha(''); }
                     }} />
                     
                     {fecha && (
@@ -147,6 +174,32 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                         </select>
                     )}
 
+                    <div className="grupo-motivo">
+                        <label className="label-selector">Motivos de la cita:</label>
+                        {opcionesMotivo.map(m => (
+                            <label key={m} className={`item-motivo ${esOtrosActivo ? 'deshabilitado' : ''}`}>
+                                <input type="checkbox" disabled={esOtrosActivo} checked={motivosSeleccionados.includes(m)} onChange={(e) => {
+                                    if(e.target.checked) setMotivosSeleccionados([...motivosSeleccionados, m]);
+                                    else setMotivosSeleccionados(motivosSeleccionados.filter(item => item !== m));
+                                }} /> {m}
+                            </label>
+                        ))}
+                        
+                        <label className="label-otros">
+                            <input type="checkbox" checked={esOtrosActivo} onChange={(e) => {
+                                setEsOtrosActivo(e.target.checked);
+                                if(e.target.checked) setMotivosSeleccionados([]);
+                            }} /> Otro motivo
+                        </label>
+                        <input 
+                            type="text" 
+                            placeholder="Especifique aquí..." 
+                            disabled={!esOtrosActivo} 
+                            value={motivoOtros} 
+                            onChange={(e) => setMotivoOtros(e.target.value)} 
+                        />
+                    </div>
+
                     <div className="grupo-tipo-cita">
                         <label>Modalidad:</label>
                         <div className="radio-group-container">
@@ -154,12 +207,10 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                             <label className="radio-item"><input type="radio" value="Virtual" checked={tipoAtencion === 'Virtual'} onChange={(e) => setTipoAtencion(e.target.value as 'Presencial' | 'Virtual')} /> Virtual</label>
                         </div>
                     </div>
-
-                    <textarea aria-label="Motivo" placeholder="Motivo" value={motivo} onChange={(e) => setMotivo(e.target.value)} />
                     
                     <div className="grupo-botones">
                         <button type="button" className="boton-volver" onClick={() => setPaso(1)}>Atrás</button>
-                        <button type="button" className="boton-registro" onClick={() => fecha && hora ? setPaso(3) : alert("Complete fecha y hora")}>Siguiente</button>
+                        <button type="button" className="boton-registro" onClick={() => fecha && hora ? setPaso(3) : toast.warning("Atención", { description: "Complete fecha y hora antes de continuar." })}>Siguiente</button>
                     </div>
                 </>
             )}
@@ -168,7 +219,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
             {paso === 3 && (
                 <>
                     <h3>Datos del Paciente</h3>
-                    <input type="text" placeholder="Cédula" value={paciente.cedula} onChange={(e) => handleBuscarPaciente(e.target.value)} required/>
+                    <input type="text" placeholder="Cédula" value={paciente.cedula} onChange={(e) => handleActualizarCedula(e.target.value)} onBlur={buscarPaciente} required/>
                     <input type="text" placeholder="Nombre" value={paciente.nombre} onChange={(e) => setPaciente({...paciente, nombre: e.target.value})} required />
                     <input type="text" placeholder="Apellido" value={paciente.apellido} onChange={(e) => setPaciente({...paciente, apellido: e.target.value})} required />
                     <input type="email" placeholder="Email" value={paciente.email} onChange={(e) => setPaciente({...paciente, email: e.target.value})} />
