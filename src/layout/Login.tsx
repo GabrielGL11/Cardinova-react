@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // <--- AGREGADO: Importamos el contexto
+import { useAuth } from '../context/AuthContext'; 
 import usuarios from '../data/autenticidad.json'; 
 import '../styles/Layout.css';
 
@@ -10,7 +10,7 @@ export function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login } = useAuth(); // <--- AGREGADO: Usamos la función de login del contexto
+    const { login } = useAuth(); // Usamos la función de login del contexto
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,13 +21,15 @@ export function Login() {
         );
 
         if (usuarioEncontrado) {
-            // Guardamos el usuario completo para tener su rol y datos disponibles
-            localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioEncontrado));
+            // Pasamos los datos necesarios al contexto (nombre y rol)
+            login({ id: usuarioEncontrado.idUsuario, nombre: usuarioEncontrado.nombre, rol: usuarioEncontrado.rol as 'paciente' | 'medico' });
             
-            login(); // <--- AGREGADO: Esto avisa al Navbar que el usuario cambió
-            
-            console.log("Bienvenido:", usuarioEncontrado.nombre);
-            navigate('/');
+            // Redirección dinámica según el rol tras el inicio de sesión
+            if (usuarioEncontrado.rol === 'paciente') {
+                navigate('/paciente/agendamiento');
+            } else {
+                navigate('/medico/mis-registros');
+            }
         } else {
             setError('Correo o contraseña incorrectos');
         }

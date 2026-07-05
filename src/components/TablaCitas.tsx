@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { type Cita } from '../lib/tipos';
 import '../styles/TablaCitas.css';
+import { useAuth } from '../context/AuthContext';
 
 interface Props {
     citas: Cita[];
@@ -12,6 +13,9 @@ interface Props {
 // -- COMPONENTE TABLACITAS --
 // Componente presentacional encargado de renderizar el listado de citas y delegar las acciones de gestión al componente padre.
 export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: Props) => {
+    // EL HOOK DEBE IR AQUÍ, DENTRO DEL COMPONENTE
+    const { userRole } = useAuth();
+
     return (
         <table className="tabla-citas">
             <thead>
@@ -30,17 +34,15 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                     <tr key={cita.idCita}>
                         <td>{cita.fecha}</td>
                         <td>{cita.hora}</td>
-                        {/* Acceso a propiedades anidadas de los objetos relacionados paciente y médico */}
                         <td>{cita.paciente?.nombre} {cita.paciente?.apellido}</td>
                         <td>{cita.medico?.nombre}</td>
                         <td>{cita.tipoAtencion}</td>
-                        {/* Aplicación de clases dinámicas para estilos visuales basados en el estado de la cita */}
                         <td><span className={`badge-estado ${cita.estado?.toLowerCase()}`}>{cita.estado}</span></td>
                         <td>
                             <div className="contenedor-acciones">
-                                {/* Navegación hacia la vista de detalle mediante rutas dinámicas */}
+                                {/* Ahora userRole es accesible aquí sin problemas */}
                                 <Link 
-                                    to={`/mis-registros/${cita.idCita}`} 
+                                    to={`/${userRole}/mis-registros/${cita.idCita}`}
                                     className="btn-accion" 
                                     title="Ver detalles"
                                     onClick={() => onVerDetalles(cita)}
@@ -48,7 +50,6 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                                     👁️
                                 </Link>
                                 
-                                {/* Renderizado condicional de acciones basado en el estado actual de la cita */}
                                 {cita.estado === 'Programada' ? (
                                     <>
                                         <button type="button" className="btn-accion" onClick={() => onCambiarEstado(cita.idCita!, 'Completada')} title="Completar">✅</button>

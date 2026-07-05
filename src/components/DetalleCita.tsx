@@ -1,12 +1,16 @@
 import { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { CitasContext } from '../context/CitasContext'; 
+import { useAuth } from '../context/AuthContext';
 
 // -- COMPONENTE DETALLECITA --
 // Renderiza la vista de detalle específico de una cita, extrayendo el identificador desde la URL y accediendo al estado global.
 const DetalleCita = () => {
     // Extracción del parámetro dinámico 'id' definido en la ruta (React Router) para identificar la cita específica
     const { id } = useParams();
+    // Hook de navegación y contexto de autenticación para retorno dinámico al listado según el rol
+    const navigate = useNavigate();
+    const { userRole } = useAuth();
 
     // Suscripción al estado global mediante el hook useContext para acceder al conjunto de citas
     const context = useContext(CitasContext);
@@ -21,12 +25,18 @@ const DetalleCita = () => {
     // Lógica de filtrado de datos: busca la instancia coincidente con el ID capturado de la URL
     const cita = citas.find(c => c.idCita === id);
 
+    // Función para manejar el retorno dinámico al listado del usuario logueado
+    const volverAtras = () => {
+        navigate(`/${userRole}/mis-registros`);
+    };
+
     // Renderizado condicional: manejo de estado de error cuando el ID no corresponde a ninguna instancia existente
     if (!cita) {
         return (
             <div className="detalle-container">
                 <h2>Cita no encontrada</h2>
                 <p>No pudimos encontrar el registro con ID: {id}</p>
+                <button type="button" className="boton-volver" onClick={volverAtras}>← Volver a Mis Registros</button>
             </div>
         );
     }
@@ -46,6 +56,11 @@ const DetalleCita = () => {
                 <p><strong>Especialidad:</strong> {cita.medico ? cita.medico.especialidad : 'N/A'}</p>
                 <p><strong>Motivo:</strong> {cita.motivo}</p>
                 <p><strong>Estado:</strong> {cita.estado}</p>
+                
+                {/* Botón de retorno dinámico */}
+                <button type="button" className="boton-volver" onClick={volverAtras}>
+                    ← Volver a Mis Registros
+                </button>
             </div>
         </div>
     );

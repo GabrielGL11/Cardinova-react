@@ -7,6 +7,7 @@ import { TarjetaMedico } from './TarjetaMedico';
 import '../styles/FormularioCita.css';
 import pacientesData from '../data/pacientes.json';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; 
 
 interface PropsFormulario {
     onGuardar: (cita: Cita) => void;
@@ -19,6 +20,8 @@ interface PropsFormulario {
 export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     // Hook de navegación imperativa para cumplimiento de la rúbrica (Criterio 6)
     const navigate = useNavigate();
+    // Acceso al rol del usuario para redirección dinámica
+    const { userRole } = useAuth();
     
     const [esp, setEsp] = useState('');
     const [ciu, setCiu] = useState('');
@@ -46,15 +49,11 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
     // Validación de fecha: verifica si el día seleccionado coincide con el calendario de atención del médico
     const esDiaValido = (fechaSeleccionada: string) => {
         if (!medico) return false;
-        
         const [year, month, day] = fechaSeleccionada.split('-').map(Number);
         const fechaObj = new Date(year, month - 1, day);
-        
         const dia = fechaObj.toLocaleDateString('es-ES', { weekday: 'long' });
-        
         const normalizar = (texto: string) => 
             texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            
         return medico.diasDisponibles.some(d => normalizar(d) === normalizar(dia));
     };
 
@@ -91,7 +90,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
         if (paciente.email === '' && paciente.telefono === '') { toast.warning("Atención", { description: "Ingrese email o teléfono." }); return; }
         if (!paciente.nombre || !paciente.apellido) { toast.error("Error", { description: "El nombre y apellido del paciente son obligatorios." }); return; }
         
-        // Validación de motivos: Debe haber al menos una opción o un texto en "Otros"
+         // Validación de motivos: Debe haber al menos una opción o un texto en "Otros"
         if (motivosSeleccionados.length === 0 && (!esOtrosActivo || !motivoOtros)) { 
             toast.error("Error", { description: "Seleccione un motivo o especifique en Otros." }); return; 
         }
@@ -115,10 +114,14 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
             onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo: motivoFinal, tipoAtencion, estado: 'Programada', medico, paciente, nombrePaciente: paciente.nombre, apellidoPaciente: paciente.apellido} });
             
             toast.success("Éxito", { description: "Cita registrada correctamente." });
-            // Navegación por código: redirige al historial tras finalizar la operación
-            navigate('/mis-registros');
             
-            // Limpieza total de estado tras guardar
+            // Lógica de redirección según el rol del usuario
+            if (userRole === 'medico') {
+                navigate('/medico/mis-registros');
+            } else {
+                navigate('/paciente/mis-registros');
+            }
+            
             setPaso(1);
             setMotivosSeleccionados([]);
             setEsOtrosActivo(false);
@@ -154,26 +157,23 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                     )}
                 </>
             )}
-            
+
             {/* Paso 2: Selección de fecha, disponibilidad horaria y modalidad de atención */}
             {paso === 2 && (
                 <>
                     <h3>Detalles de la Cita</h3>
                     {medico && <p className="aviso-dias">El médico atiende: <strong>{medico.diasDisponibles.join(', ')}</strong></p>}
-                    
                     <input type="date" aria-label="Seleccione fecha" value={fecha} onChange={(e) => {
                         const val = e.target.value;
                         if(esDiaValido(val)) setFecha(val);
                         else { toast.error("Fecha no válida", { description: "El médico no atiende ese día." }); setFecha(''); }
                     }} />
-                    
                     {fecha && (
                         <select aria-label="Seleccione hora" value={hora} onChange={(e) => setHora(e.target.value)}>
                             <option value="">Seleccione hora</option>
                             {horariosDisponibles.map(h => <option key={h} value={h}>{h}</option>)}
                         </select>
                     )}
-
                     <div className="grupo-motivo">
                         <label className="label-selector">Motivos de la cita:</label>
                         {opcionesMotivo.map(m => (
@@ -184,22 +184,14 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                                 }} /> {m}
                             </label>
                         ))}
-                        
                         <label className="label-otros">
                             <input type="checkbox" checked={esOtrosActivo} onChange={(e) => {
                                 setEsOtrosActivo(e.target.checked);
                                 if(e.target.checked) setMotivosSeleccionados([]);
                             }} /> Otro motivo
                         </label>
-                        <input 
-                            type="text" 
-                            placeholder="Especifique aquí..." 
-                            disabled={!esOtrosActivo} 
-                            value={motivoOtros} 
-                            onChange={(e) => setMotivoOtros(e.target.value)} 
-                        />
+                        <input type="text" placeholder="Especifique aquí..." disabled={!esOtrosActivo} value={motivoOtros} onChange={(e) => setMotivoOtros(e.target.value)} />
                     </div>
-
                     <div className="grupo-tipo-cita">
                         <label>Modalidad:</label>
                         <div className="radio-group-container">
@@ -207,14 +199,13 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                             <label className="radio-item"><input type="radio" value="Virtual" checked={tipoAtencion === 'Virtual'} onChange={(e) => setTipoAtencion(e.target.value as 'Presencial' | 'Virtual')} /> Virtual</label>
                         </div>
                     </div>
-                    
                     <div className="grupo-botones">
                         <button type="button" className="boton-volver" onClick={() => setPaso(1)}>Atrás</button>
                         <button type="button" className="boton-registro" onClick={() => fecha && hora ? setPaso(3) : toast.warning("Atención", { description: "Complete fecha y hora antes de continuar." })}>Siguiente</button>
                     </div>
                 </>
             )}
-
+            
             {/* Paso 3: Captura de datos personales y confirmación final */}
             {paso === 3 && (
                 <>
@@ -224,7 +215,6 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
                     <input type="text" placeholder="Apellido" value={paciente.apellido} onChange={(e) => setPaciente({...paciente, apellido: e.target.value})} required />
                     <input type="email" placeholder="Email" value={paciente.email} onChange={(e) => setPaciente({...paciente, email: e.target.value})} />
                     <input type="tel" placeholder="Teléfono" value={paciente.telefono} onChange={(e) => setPaciente({...paciente, telefono: e.target.value})} />
-                    
                     <div className="grupo-botones">
                         <button type="button" className="boton-volver" onClick={() => setPaso(2)}>Atrás</button>
                         <button type="button" className="boton-registro" onClick={handleGuardar}>Finalizar Registro</button>
