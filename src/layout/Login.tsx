@@ -27,7 +27,7 @@ export function Login() {
             login(); // <--- AGREGADO: Esto avisa al Navbar que el usuario cambió
             
             console.log("Bienvenido:", usuarioEncontrado.nombre);
-            navigate('/mis-registros');
+            navigate('/');
         } else {
             setError('Correo o contraseña incorrectos');
         }

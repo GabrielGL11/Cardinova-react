@@ -6,6 +6,7 @@ import { FormularioCita } from './components/FormularioCita';
 import { MisRegistros } from './components/MisRegistros'; 
 import DetalleCita from './components/DetalleCita';
 import { type Cita } from './lib/tipos';
+import { Home } from './layout/Home';
 import { Login } from './layout/Login';
 
 // -- COMPONENTE APPCONTENT --
@@ -62,7 +63,7 @@ return (
 
       {/* Definición de rutas de navegación: vincula paths URL con componentes específicos */}
         <Routes>
-        <Route path="/" element={<h1>Bienvenido a Cardinova</h1>} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/agendamiento" element={<FormularioCita onGuardar={agregarCita} citas={citas} />} />
         <Route path="/mis-registros/:id" element={<DetalleCita />} />

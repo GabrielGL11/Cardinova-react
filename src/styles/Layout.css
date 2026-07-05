@@ -168,3 +168,86 @@
 .boton-ingresar:active {
     transform: translateY(0); /* Efecto al hacer clic */
 }
+
+/* --- Estilos para Home.tsx --- */
+
+#inicio {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.titulo-frontal {
+    font-family: var(--font-nav);
+    font-size: 2.5rem;
+    color: var(--color-nav);
+    margin-bottom: 20px;
+}
+
+.seccion-problema {
+    background-color: #f4f7f6;
+    padding: 40px;
+    margin: 40px 0;
+    border-radius: 12px;
+}
+
+.publico_objetivo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+    padding: 60px 20px;
+}
+
+.texto-publico {
+    flex: 1;
+}
+
+.miembros {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+
+.miembros figure {
+    text-align: center;
+}
+
+.miembros img {
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid var(--color-nav);
+}
+
+.boton-inicio {
+    display: inline-block;
+    background-color: var(--color-nav);
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.boton-inicio:hover {
+    background-color: #133a47;
+}
+
+.imagen-fondo {
+    width: 100%;
+    height: 300px; /* Ajusta este valor a la altura que desees */
+    object-fit: cover; /* Esto evita que la imagen se estire */
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.imagen-publico img {
+    width: 100%;
+    max-width: 500px; /* Que no sea gigante */
+    height: 350px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
