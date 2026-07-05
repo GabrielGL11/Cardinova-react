@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
+import App from './App'
 
 // -- COMPONENTE RAIZ (ENTRY POINT) --
 // Este archivo es el responsable de montar la aplicación en el DOM.

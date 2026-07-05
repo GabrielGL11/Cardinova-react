@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { TablaCitas } from './TablaCitas';
-import { CitasContext } from './CitasContext'; 
+import { CitasContext } from '../context/CitasContext'; 
 
 // -- COMPONENTE MISREGISTROS --
 // Gestiona la visualización del historial de citas, proporcionando herramientas de filtrado por especialidad

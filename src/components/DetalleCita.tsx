@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { CitasContext } from '../components/CitasContext'; 
+import { CitasContext } from '../context/CitasContext'; 
 
 // -- COMPONENTE DETALLECITA --
 // Renderiza la vista de detalle específico de una cita, extrayendo el identificador desde la URL y accediendo al estado global.

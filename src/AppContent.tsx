@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Toaster, toast } from 'sonner'; 
-import { CitasContext } from './components/CitasContext'; 
+import { CitasContext } from './context/CitasContext'; 
 import { FormularioCita } from './components/FormularioCita';
 import { MisRegistros } from './components/MisRegistros'; 
 import DetalleCita from './components/DetalleCita';

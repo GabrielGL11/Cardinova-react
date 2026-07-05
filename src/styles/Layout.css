@@ -1,8 +1,10 @@
 :root {
     --color-nav: #1a4a5a;
-    --font-nav: 'Inter', sans-serif; 
+    --font-nav: 'Inter', sans-serif;
+    --error-color: #d93025; /* Añadido para el error */
 }
 
+/* --- Estilos de Navegación y Footer (Originales) --- */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -37,9 +39,54 @@
 }
 
 .nav-links a:hover {
-    opacity: 0.7; 
+    opacity: 0.7;
 }
 
+/* --- Nuevos estilos para Login (Integrados) --- */
+
+.formulario1 {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.input-password {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-password input {
+    flex: 1;
+}
+
+.toggle-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: -30px;
+}
+
+.mensaje-error {
+    color: var(--error-color);
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.texto-centro {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.volver-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* --- Footer (Original) --- */
 .footer {
     text-align: center;
     padding: 2rem;
@@ -73,4 +120,51 @@
 .footer p {
     font-size: 0.85rem;
     opacity: 0.7;
+}
+
+.user-info-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    font-size: 0.85rem;
+}
+
+.btn-cerrar-sesion {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+.btn-cerrar-sesion:hover {
+    background: #c0392b;
+}
+
+/* Estilo moderno para el botón de ingreso */
+.boton-ingresar {
+    display: block;
+    background-color: #007bff; 
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%; /* Para que ocupe el ancho del formulario */
+    margin-top: 20px;
+}
+
+.boton-ingresar:hover {
+    background-color: #0069d9; /* Un tono un poco más claro al pasar el mouse */
+    transform: translateY(-2px); /* Un pequeño efecto de elevación */
+}
+
+.boton-ingresar:active {
+    transform: translateY(0); /* Efecto al hacer clic */
 }
