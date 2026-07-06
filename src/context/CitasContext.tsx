@@ -17,7 +17,12 @@ export const CitasContext = createContext<CitasContextType | undefined>(undefine
 // -- COMPONENTE CITASPROVIDER --
 // Gestiona el estado global de las citas, integrando datos de pacientes y médicos mediante una capa de procesamiento en memoria
 export const CitasProvider = ({ children }: { children: ReactNode }) => {
-    const [citasRaw, setCitasRaw] = useState<any[]>(citasIniciales);
+    // Inicializamos el estado leyendo desde localStorage. Si no hay nada guardado, usamos citasIniciales
+    const [citasRaw, setCitasRaw] = useState<any[]>(() => {
+        const guardadas = localStorage.getItem('citas_agendadas');
+        return guardadas ? JSON.parse(guardadas) : citasIniciales;
+    });
+    
     const [citaEditando, setCitaEditando] = useState<Cita | null>(null);
 
     // Procesa las citas crudas para poblar objetos relacionados (médico y paciente) garantizando integridad de datos
@@ -36,12 +41,18 @@ export const CitasProvider = ({ children }: { children: ReactNode }) => {
         })) as Cita[];
     }, [citasRaw]);
 
-    // Registra una nueva cita en el estado crudo
-    const agregarCita = (nuevaCita: Cita) => setCitasRaw([...citasRaw, nuevaCita]);
+    // Registra una nueva cita en el estado crudo y actualiza localStorage para persistencia
+    const agregarCita = (nuevaCita: Cita) => {
+        const nuevasCitas = [...citasRaw, nuevaCita];
+        setCitasRaw(nuevasCitas);
+        localStorage.setItem('citas_agendadas', JSON.stringify(nuevasCitas));
+    };
     
-    // Actualiza una cita existente mediante su identificador único
+    // Actualiza una cita existente y sincroniza con localStorage
     const actualizarCita = (citaActualizada: Cita) => {
-        setCitasRaw(citasRaw.map(c => c.idCita === citaActualizada.idCita ? citaActualizada : c));
+        const nuevasCitas = citasRaw.map(c => c.idCita === citaActualizada.idCita ? citaActualizada : c);
+        setCitasRaw(nuevasCitas);
+        localStorage.setItem('citas_agendadas', JSON.stringify(nuevasCitas));
     };
 
     return (
