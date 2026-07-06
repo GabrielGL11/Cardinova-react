@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { TablaCitas } from './TablaCitas';
 import { CitasContext } from '../context/CitasContext'; 
-import { useAuth, type UserData } from '../context/AuthContext'; // Importamos el hook de autenticación
+import { useAuth, type UserData } from '../context/AuthContext'; 
 import medicos from '../data/medicos.json';
 
 // -- COMPONENTE MISREGISTROS --
@@ -50,9 +50,17 @@ export const MisRegistros = () => {
         return false;
     });
 
+    // Filtra por especialidad seleccionada
     const citasFiltradas = filtroEspecialidad === "Todos" 
         ? citasUsuario 
         : citasUsuario.filter(c => c.medico?.especialidad === filtroEspecialidad);
+
+    // -- LÓGICA DE ORDENAMIENTO POR FECHA --
+    // Ordena las citas de forma cronológica (ascendente: de la más antigua a la más reciente)
+    // Se utiliza el spread operator [...citasFiltradas] para no modificar el array original y cumplir con la inmutabilidad de React.
+    const citasOrdenadas = [...citasFiltradas].sort((a, b) => {
+        return new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
+    });
 
     // Extracción dinámica de especialidades únicas para poblar el selector de filtros
     const especialidades = [
@@ -84,9 +92,9 @@ export const MisRegistros = () => {
                 </select>
             </div>
 
-            {/* TablaCitas: componente presentacional que renderiza las instancias filtradas */}
+            {/* TablaCitas: componente presentacional que renderiza las instancias filtradas y ordenadas */}
             <TablaCitas 
-                citas={citasFiltradas} 
+                citas={citasOrdenadas} 
                 onCambiarEstado={handleCambiarEstado}
                 // Conexión con el flujo de edición: inyecta la cita seleccionada al contexto de edición global
                 onEditar={(cita) => setCitaEditando(cita)}
