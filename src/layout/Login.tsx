@@ -22,7 +22,7 @@ export function Login() {
 
         if (usuarioEncontrado) {
             // Pasamos los datos necesarios al contexto (nombre y rol)
-            login({ id: usuarioEncontrado.idUsuario, nombre: usuarioEncontrado.nombre, rol: usuarioEncontrado.rol as 'paciente' | 'medico' });
+            login({ id: usuarioEncontrado.idUsuario, nombre: usuarioEncontrado.nombre, rol: usuarioEncontrado.rol as 'paciente' | 'medico', cedula: usuarioEncontrado.cedula });
             
             // Redirección dinámica según el rol tras el inicio de sesión
             if (usuarioEncontrado.rol === 'paciente') {

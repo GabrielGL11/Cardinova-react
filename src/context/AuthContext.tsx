@@ -8,6 +8,8 @@ export interface UserData {
     id: string; // ID único necesario para el filtrado de citas
     nombre: string;
     rol: 'paciente' | 'medico';
+    cedula: string;
+    idMedico?: string;
 }
 
 /**

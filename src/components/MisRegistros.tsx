@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react';
 import { TablaCitas } from './TablaCitas';
 import { CitasContext } from '../context/CitasContext'; 
-import { useAuth } from '../context/AuthContext'; // Importamos el hook de autenticación
+import { useAuth, type UserData } from '../context/AuthContext'; // Importamos el hook de autenticación
+import medicos from '../data/medicos.json';
 
 // -- COMPONENTE MISREGISTROS --
 // Gestiona la visualización del historial de citas, proporcionando herramientas de filtrado por especialidad
@@ -10,6 +11,7 @@ export const MisRegistros = () => {
     // Suscripción al estado global para acceder a la lista de citas y funciones de gestión
     const context = useContext(CitasContext);
     const { userData, userRole } = useAuth(); // Obtenemos el usuario y rol actual
+    const usuarioActual: UserData | null = userData;
 
     if (!context) return null;
     
@@ -23,8 +25,18 @@ export const MisRegistros = () => {
     // 1. Médicos ven todo el historial.
     // 2. Pacientes ven ÚNICAMENTE citas donde el 'creadoPor' coincida con su ID.
     const citasUsuario = citas.filter((cita) => {
+        if (!usuarioActual) return false;
         // Si el usuario es médico, ve todo el listado sin restricciones
-        if (userRole === 'medico') return true;
+        if (userRole === 'medico') {
+            // Buscamos al médico en tu JSON de médicos usando la cédula
+            const medicoLogueado = medicos.find((m) => String(m.cedula).trim() === String(usuarioActual?.cedula).trim());
+            
+            if (medicoLogueado) {
+                return String(cita.idMedico).trim() === String(medicoLogueado.idMedico).trim();
+            }
+            
+            return false; // Si no hay coincidencia, no muestra la cita
+        }
         
         // Si el usuario es paciente:
         if (userRole === 'paciente') {

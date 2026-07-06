@@ -4,6 +4,7 @@
 export interface Medico {
     idMedico: string;
     nombre: string;
+    cedula: string;
     especialidad: string;
     ciudad: string;
     hospital: string;
