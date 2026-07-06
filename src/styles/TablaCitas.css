@@ -7,3 +7,4 @@
 .boton-eliminar { color: red; border: none; background: none; cursor: pointer; padding: 5px; }
 .texto-centrado { text-align: center; }
 .estado-finalizado {font-size: 0.8rem; color: #999; font-style: italic; margin-left: 5px; }
+.aviso-disponibilidad {background-color: #fff3cd; padding: 10px; margin-bottom: 10px; border-radius: 5px; color: #856404; }

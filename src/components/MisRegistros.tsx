@@ -3,6 +3,7 @@ import { TablaCitas } from './TablaCitas';
 import { CitasContext } from '../context/CitasContext'; 
 import { useAuth, type UserData } from '../context/AuthContext'; 
 import medicos from '../data/medicos.json';
+import '../styles/TablaCitas.css';
 
 // -- COMPONENTE MISREGISTROS --
 // Gestiona la visualización del historial de citas, proporcionando herramientas de filtrado por especialidad
@@ -20,22 +21,25 @@ export const MisRegistros = () => {
 
     // Estado local para manejar el criterio de filtrado aplicado sobre el conjunto de citas
     const [filtroEspecialidad, setFiltroEspecialidad] = useState("Todos");
+    // Nuevo estado local para el filtrado por día de atención (exclusivo para médicos)
+    const [filtroDia, setFiltroDia] = useState("Todos");
+
+    // Buscamos al médico actual en el JSON para obtener sus días de disponibilidad
+    const medicoLogueado = medicos.find((m) => String(m.cedula).trim() === String(usuarioActual?.cedula).trim());
 
     // Lógica de filtrado Estricta:
-    // 1. Médicos ven todo el historial.
+    // 1. Médicos ven: Sus propias citas (por ID) O citas antiguas (sin idMedico claro o para todos).
     // 2. Pacientes ven ÚNICAMENTE citas donde el 'creadoPor' coincida con su ID.
     const citasUsuario = citas.filter((cita) => {
         if (!usuarioActual) return false;
-        // Si el usuario es médico, ve todo el listado sin restricciones
+
+        // Si el usuario es médico:
         if (userRole === 'medico') {
-            // Buscamos al médico en tu JSON de médicos usando la cédula
-            const medicoLogueado = medicos.find((m) => String(m.cedula).trim() === String(usuarioActual?.cedula).trim());
+            // Permitimos ver si la cita no tiene médico asignado o si el id coincide
+            const esCitaPropia = String(cita.idMedico).trim() === String(medicoLogueado?.idMedico).trim();
+            const esCitaSinMedico = !cita.idMedico;
             
-            if (medicoLogueado) {
-                return String(cita.idMedico).trim() === String(medicoLogueado.idMedico).trim();
-            }
-            
-            return false; // Si no hay coincidencia, no muestra la cita
+            return esCitaPropia || esCitaSinMedico;
         }
         
         // Si el usuario es paciente:
@@ -50,10 +54,26 @@ export const MisRegistros = () => {
         return false;
     });
 
-    // Filtra por especialidad seleccionada
-    const citasFiltradas = filtroEspecialidad === "Todos" 
-        ? citasUsuario 
-        : citasUsuario.filter(c => c.medico?.especialidad === filtroEspecialidad);
+    // Lógica avanzada de filtrado: 
+    // - Paciente: Filtra por especialidad.
+    // - Médico: Filtra por el día de la semana de la cita (usando índices para evitar errores de idioma).
+    const diaAMap: { [key: string]: number } = { 
+        'lunes': 1, 'martes': 2, 'miercoles': 3, 'jueves': 4, 'viernes': 5, 'sabado': 6, 'domingo': 0 
+    };
+
+    const citasFiltradas = citasUsuario.filter((c) => {
+        if (userRole === 'paciente') {
+            return filtroEspecialidad === "Todos" || c.medico?.especialidad === filtroEspecialidad;
+        }
+        if (userRole === 'medico' && filtroDia !== "Todos") {
+            const fechaObj = new Date(c.fecha);
+            // Usamos getUTCDay para evitar desplazamientos por zona horaria
+            const diaSemanaCita = fechaObj.getUTCDay(); 
+            const diaSeleccionadoIndex = diaAMap[filtroDia.toLowerCase()];
+            return diaSemanaCita === diaSeleccionadoIndex;
+        }
+        return true;
+    });
 
     // -- LÓGICA DE ORDENAMIENTO POR FECHA --
     // Ordena las citas de forma cronológica (ascendente: de la más antigua a la más reciente)
@@ -78,18 +98,29 @@ export const MisRegistros = () => {
         <div className="contenedor-registros">
             <h2>Mis Registros</h2>
             
-            {/* Sección de filtros: control para restringir la vista por especialidad médica */}
+            {/* Sección de filtros dinámica según el rol */}
             <div className="filtro-container">
-                <label htmlFor="filtroEspecialidad">Filtrar por Especialidad: </label>
-                <select 
-                    id="filtroEspecialidad" 
-                    value={filtroEspecialidad} 
-                    onChange={(e) => setFiltroEspecialidad(e.target.value)}
-                >
-                    {especialidades.map(esp => (
-                        <option key={esp} value={esp}>{esp}</option>
-                    ))}
-                </select>
+                {userRole === 'medico' ? (
+                    <>
+                        <div className="aviso-disponibilidad">
+                            El médico atiende: <strong>{medicoLogueado?.diasDisponibles?.join(", ")}</strong>
+                        </div>
+                        <label htmlFor="filtroDia">Filtrar por día: </label>
+                        <select id="filtroDia" value={filtroDia} onChange={(e) => setFiltroDia(e.target.value)}>
+                            <option value="Todos">Todos</option>
+                            {medicoLogueado?.diasDisponibles?.map(dia => (
+                                <option key={dia} value={dia}>{dia}</option>
+                            ))}
+                        </select>
+                    </>
+                ) : (
+                    <>
+                        <label htmlFor="filtroEspecialidad">Filtrar por Especialidad: </label>
+                        <select id="filtroEspecialidad" value={filtroEspecialidad} onChange={(e) => setFiltroEspecialidad(e.target.value)}>
+                            {especialidades.map(esp => (<option key={esp} value={esp}>{esp}</option>))}
+                        </select>
+                    </>
+                )}
             </div>
 
             {/* TablaCitas: componente presentacional que renderiza las instancias filtradas y ordenadas */}
