@@ -24,6 +24,7 @@ export interface Cita {
     idCita?: string;
     idMedico: string;
     idPaciente: string;
+    creadoPor?: string;
     fecha: string;
     hora: string;
     motivo: string;

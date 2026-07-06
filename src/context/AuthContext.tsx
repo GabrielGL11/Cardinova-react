@@ -4,7 +4,7 @@ import { createContext, useContext, useState, ReactNode, useCallback } from 'rea
  * Define la estructura de los datos del usuario para mantener la consistencia.
  * Se añadió el campo 'id' para poder filtrar las citas por usuario.
  */
-interface UserData {
+export interface UserData {
     id: string; // ID único necesario para el filtrado de citas
     nombre: string;
     rol: 'paciente' | 'medico';
@@ -14,7 +14,7 @@ interface UserData {
  * AuthContextType: Define qué funciones y estados están disponibles globalmente.
  * Se incluyó 'userData' para acceder a la información completa del usuario.
  */
-interface AuthContextType {
+export interface AuthContextType {
     isLoggedIn: boolean;
     userRole: 'paciente' | 'medico' | null;
     userData: UserData | null; // Nuevo estado para persistir el objeto completo

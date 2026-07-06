@@ -15,7 +15,7 @@ import { Login } from './layout/Login';
 // gestionando la lógica de negocio transversal como la disponibilidad horaria y edición de registros.
 export function AppContent() {
     const context = useContext(CitasContext);
-    const { isLoggedIn, userRole } = useAuth(); // Consumo del estado global de autenticación
+    const { isLoggedIn, userRole, userData } = useAuth(); // Consumo del estado global de autenticación
     
     if (!context) return null;
     const { citas, agregarCita, actualizarCita, citaEditando, setCitaEditando } = context;
@@ -70,7 +70,7 @@ export function AppContent() {
                 {/* Rutas Protegidas - PACIENTE */}
                 <Route 
                     path="/paciente/agendamiento" 
-                    element={isLoggedIn && userRole === 'paciente' ? <FormularioCita onGuardar={agregarCita} citas={citas} /> : <Navigate to="/login" />} 
+                    element={isLoggedIn && userRole === 'paciente' ? <FormularioCita onGuardar={agregarCita} citas={citas} usuarioActual={userData}/> : <Navigate to="/login" />} 
                 />
                 <Route 
                     path="/paciente/mis-registros" 

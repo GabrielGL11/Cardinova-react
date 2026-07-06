@@ -7,17 +7,18 @@ import { TarjetaMedico } from './TarjetaMedico';
 import '../styles/FormularioCita.css';
 import pacientesData from '../data/pacientes.json';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth, type UserData } from '../context/AuthContext'; 
 
 interface PropsFormulario {
     onGuardar: (cita: Cita) => void;
     citas: Cita[];
+    usuarioActual: UserData | null;
 }
 
 // -- COMPONENTE FORMULARIOCITA --
 // Gestiona el ciclo de vida de agendamiento mediante un flujo de 3 pasos, integrando validaciones de disponibilidad, 
 // persistencia de datos de pacientes y limpieza de estado para garantizar la privacidad.
-export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
+export const FormularioCita = ({ onGuardar, citas, usuarioActual }: PropsFormulario) => {
     // Hook de navegación imperativa para cumplimiento de la rúbrica (Criterio 6)
     const navigate = useNavigate();
     // Acceso al rol del usuario para redirección dinámica
@@ -94,6 +95,10 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
         if (motivosSeleccionados.length === 0 && (!esOtrosActivo || !motivoOtros)) { 
             toast.error("Error", { description: "Seleccione un motivo o especifique en Otros." }); return; 
         }
+        if (userRole === 'paciente' && !usuarioActual?.id) {
+        toast.error("Error de sesión", { description: "No se pudo identificar tu usuario. Por favor, inicia sesión de nuevo." });
+        return;
+    }
 
         const citaDuplicada = citas.find(c => 
             c.idMedico === medico?.idMedico && 
@@ -111,7 +116,7 @@ export const FormularioCita = ({ onGuardar, citas }: PropsFormulario) => {
             // Concatenar motivos según el modo seleccionado
             const motivoFinal = esOtrosActivo ? `Otros: ${motivoOtros}` : motivosSeleccionados.join(", ");
             
-            onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo: motivoFinal, tipoAtencion, estado: 'Programada', medico, paciente, nombrePaciente: paciente.nombre, apellidoPaciente: paciente.apellido} });
+            onGuardar({ ... {idCita: Date.now().toString(), idMedico: medico.idMedico, idPaciente: paciente.idPaciente, fecha, hora, motivo: motivoFinal, tipoAtencion, estado: 'Programada', medico, paciente, nombrePaciente: paciente.nombre, apellidoPaciente: paciente.apellido, creadoPor: usuarioActual?.id} });
             
             toast.success("Éxito", { description: "Cita registrada correctamente." });
             
