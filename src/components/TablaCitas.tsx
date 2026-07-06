@@ -40,7 +40,7 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                         <td><span className={`badge-estado ${cita.estado?.toLowerCase()}`}>{cita.estado}</span></td>
                         <td>
                             <div className="contenedor-acciones">
-                                {/* Ahora userRole es accesible aquí sin problemas */}
+                                {/* Navegación hacia la vista de detalle mediante rutas dinámicas */}
                                 <Link 
                                     to={`/${userRole}/mis-registros/${cita.idCita}`}
                                     className="btn-accion" 
@@ -50,10 +50,20 @@ export const TablaCitas = ({ citas, onCambiarEstado, onEditar, onVerDetalles }: 
                                     👁️
                                 </Link>
                                 
+                                {/* Renderizado condicional de acciones basado en el estado actual de la cita */}
                                 {cita.estado === 'Programada' ? (
                                     <>
-                                        <button type="button" className="btn-accion" onClick={() => onCambiarEstado(cita.idCita!, 'Completada')} title="Completar">✅</button>
-                                        <button type="button" className="btn-accion" onClick={() => onEditar(cita)} title="Editar">✏️</button>
+                                        {/* Completar: Acción exclusiva para el rol médico */}
+                                        {userRole === 'medico' && (
+                                            <button type="button" className="btn-accion" onClick={() => onCambiarEstado(cita.idCita!, 'Completada')} title="Completar">✅</button>
+                                        )}
+
+                                        {/* Editar: Acción exclusiva para el rol paciente */}
+                                        {userRole === 'paciente' && (
+                                            <button type="button" className="btn-accion" onClick={() => onEditar(cita)} title="Editar">✏️</button>
+                                        )}
+
+                                        {/* Cancelar: Acción común para ambos roles */}
                                         <button type="button" className="btn-accion" onClick={() => onCambiarEstado(cita.idCita!, 'Cancelada')} title="❌">❌</button>
                                     </>
                                 ) : (
