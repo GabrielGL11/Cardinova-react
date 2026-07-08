@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Layout.css';
 
+// Componente funcional para el registro de nuevos pacientes. Implementa persistencia local mediante localStorage y validación de contraseñas.
 export function RegistroPaciente() {
+    // Estado inicial del formulario: gestiona los campos de entrada como un objeto único para facilitar la actualización.
     const [formData, setFormData] = useState({
         nombres: '',
         apellidos: '',
@@ -13,30 +15,31 @@ export function RegistroPaciente() {
     });
 
     const [error, setError] = useState('');
+    // Estado booleano para alternar el atributo 'type' (text/password) simultáneamente en ambos campos.
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
+    // Manejador de eventos para el envío del formulario. Ejecuta validaciones de integridad de datos y persiste el nuevo usuario en localStorage.
     const handleRegistro = (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Validación: comparativa directa para asegurar coincidencia de contraseñas.
         if (formData.password !== formData.confirmar) {
             setError('Las contraseñas no coinciden');
             return;
         }
 
-        // 1. Crear el objeto del nuevo usuario
         const nuevoPaciente = {
             idUsuario: Date.now(),
-            nombre: `${formData.nombres} ${formData.apellidos}`, // Concatenamos para que coincida con tu lógica de Login
+            nombre: `${formData.nombres} ${formData.apellidos}`,
             cedula: formData.cedula,
             correo: formData.correo,
-            contrasena: formData.password, // Asegúrate de usar 'contrasena' para que coincida con tu Login.tsx
+            contrasena: formData.password,
             rol: 'paciente'
         };
 
-        // 2. Obtener usuarios actuales de localStorage (o inicializar array vacío)
+        // Acceso al API de almacenamiento del navegador para persistencia de datos.
         const usuariosGuardados = JSON.parse(localStorage.getItem('usuarios_app') || '[]');
-        
-        // 3. Agregar el nuevo y guardar
         usuariosGuardados.push(nuevoPaciente);
         localStorage.setItem('usuarios_app', JSON.stringify(usuariosGuardados));
 
@@ -46,9 +49,7 @@ export function RegistroPaciente() {
 
     return (
         <section className="producto1">
-            <div className="etiqueta">
-                <span><i className="fa-solid fa-user-plus"></i> REGISTRO DE PACIENTE</span>
-            </div>
+            <div className="etiqueta"><span><i className="fa-solid fa-user-plus"></i> REGISTRO DE PACIENTE</span></div>
             <h2>Crea tu cuenta</h2>
 
             <form className="formulario1 centrado" onSubmit={handleRegistro}>
@@ -77,13 +78,37 @@ export function RegistroPaciente() {
                     <input type="email" id="correo" required 
                         value={formData.correo} onChange={(e) => setFormData({...formData, correo: e.target.value})} />
 
+                    {/* Contraseña: Contenedor con clase 'input-password' para aplicar estilos consistentes (fondo/bordes) */}
                     <label htmlFor="password">Contraseña:</label>
-                    <input type="password" id="password" required 
-                        value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} />
+                    <div className="input-password">
+                        <input 
+                            type={showPassword ? "text" : "password"} 
+                            id="password" 
+                            required 
+                            value={formData.password} 
+                            onChange={(e) => setFormData({...formData, password: e.target.value})} 
+                        />
+                        <button 
+                            type="button" 
+                            className="toggle-password" 
+                            onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        >
+                            <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                        </button>
+                    </div>
 
+                    {/* Confirmación: Se utiliza el mismo contenedor 'input-password' para heredar el diseño visual del primer input */}
                     <label htmlFor="confirmar">Confirmar contraseña:</label>
-                    <input type="password" id="confirmar" required 
-                        value={formData.confirmar} onChange={(e) => setFormData({...formData, confirmar: e.target.value})} />
+                    <div className="input-password">
+                        <input 
+                            type={showPassword ? "text" : "password"} 
+                            id="confirmar" 
+                            required 
+                            value={formData.confirmar} 
+                            onChange={(e) => setFormData({...formData, confirmar: e.target.value})} 
+                        />
+                    </div>
 
                     <button type="submit" className="botones boton-registro boton-completo">Crear cuenta</button>
                     
