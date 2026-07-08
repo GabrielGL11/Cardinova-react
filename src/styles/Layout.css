@@ -1,7 +1,7 @@
 :root {
     --color-nav: #1a4a5a;
     --font-nav: 'Inter', sans-serif;
-    --error-color: #d93025; /* Añadido para el error */
+    --error-color: #d93025;
 }
 
 /* --- Estilos de Navegación y Footer (Originales) --- */
@@ -172,34 +172,78 @@
 /* --- Estilos para Home.tsx --- */
 
 #inicio {
-    padding: 40px 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
     text-align: center;
 }
 
+.bloque-cabecera {
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
 .titulo-frontal {
-    font-family: var(--font-nav);
-    font-size: 2.5rem;
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
     color: var(--color-nav);
-    margin-bottom: 20px;
+}
+
+.boton-inicio {
+    display: inline-block;
+    background-color: var(--color-nav);
+    color: white;
+    padding: 12px 32px;
+    font-size: 18px;
+    border-radius: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.3s;
+}
+
+.boton-inicio:hover {
+    transform: scale(1.05);
+    background-color: #133a47;
 }
 
 .seccion-problema {
-    background-color: #f4f7f6;
-    padding: 40px;
-    margin: 40px 0;
-    border-radius: 12px;
+    padding: 80px 10%;
+    background-color: #eef6f8;
+    border-radius: 60px;
+    margin: 40px 20px;
 }
 
 .publico_objetivo {
+    padding: 80px 10%;
+    background-color: #eef6f8;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     gap: 40px;
-    padding: 60px 20px;
+    border-radius: 60px;
+    margin: 40px 20px;
 }
 
-.texto-publico {
-    flex: 1;
+.seccion-problema p, .texto-publico p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    text-align: justify;
+    max-width: 800px;
+}
+
+.imagen-publico img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+#equipo {
+    padding: 40px 0;
+    text-align: center;
 }
 
 .miembros {
@@ -209,15 +253,13 @@
     margin-top: 30px;
 }
 
-
-.miembros figure {
-    text-align: center;
-}
-
 .miembros img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
     border-radius: 50%;
-    margin-bottom: 10px;
     border: 3px solid var(--color-nav);
+    margin-bottom: 10px;
 }
 
 .boton-inicio {
@@ -307,4 +349,15 @@
 @keyframes aparecer {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.boton-completo {
+    width: 100%;
+    margin-top: 20px;
 }

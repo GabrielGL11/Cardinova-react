@@ -15,14 +15,25 @@ export function Login() {
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Buscamos en 'autenticidad.json'
-        const usuarioEncontrado = usuarios.find(
+        // 1. Obtenemos los usuarios registrados localmente (nuevos pacientes)
+        const usuariosLocal = JSON.parse(localStorage.getItem('usuarios_app') || '[]');
+        
+        // 2. Combinamos los usuarios del JSON con los nuevos pacientes de localStorage
+        const todosLosUsuarios = [...usuarios, ...usuariosLocal];
+
+        // 3. Buscamos en la lista combinada (JSON + nuevos registros)
+        const usuarioEncontrado = todosLosUsuarios.find(
             (u) => u.correo === email && u.contrasena === password
         );
 
         if (usuarioEncontrado) {
             // Pasamos los datos necesarios al contexto (nombre y rol)
-            login({ id: usuarioEncontrado.idUsuario, nombre: usuarioEncontrado.nombre, rol: usuarioEncontrado.rol as 'paciente' | 'medico', cedula: usuarioEncontrado.cedula });
+            login({ 
+                id: usuarioEncontrado.idUsuario, 
+                nombre: usuarioEncontrado.nombre, 
+                rol: usuarioEncontrado.rol as 'paciente' | 'medico', 
+                cedula: usuarioEncontrado.cedula 
+            });
             
             // Redirección dinámica según el rol tras el inicio de sesión
             if (usuarioEncontrado.rol === 'paciente') {

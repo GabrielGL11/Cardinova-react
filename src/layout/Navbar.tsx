@@ -79,7 +79,6 @@ export const Navbar = () => {
                         <li><Link to="/cita">Cita Médica</Link></li>
                         <li><Link to="/recomendacion">Recomendaciones</Link></li>
                         <li><Link to="/sugerencias">Sugerencias</Link></li>
-                        <li><Link to="/registro-familiar">Registro Familiar</Link></li>
                         <li><Link to="/administracion">Panel Administrativo</Link></li>
                         <li><Link to="/equipo">Equipo</Link></li>
                     </ul>

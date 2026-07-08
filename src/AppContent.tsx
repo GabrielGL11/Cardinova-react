@@ -9,6 +9,7 @@ import DetalleCita from './components/DetalleCita';
 import { type Cita } from './lib/tipos';
 import { Home } from './layout/Home';
 import { Login } from './layout/Login';
+import { RegistroPaciente } from './layout/RegistroPaciente';
 
 // -- COMPONENTE APPCONTENT --
 // Actúa como el consumidor principal del contexto y orquestador de las vistas, 
@@ -66,6 +67,7 @@ export function AppContent() {
                 {/* Rutas Públicas */}
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/registro" element={<RegistroPaciente />} />
 
                 {/* Rutas Protegidas - PACIENTE */}
                 <Route 

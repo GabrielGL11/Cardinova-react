@@ -64,12 +64,14 @@ export const PasoDatosPaciente = ({ paciente, setPaciente, onAtras, onGuardar }:
                 placeholder="Email" 
                 value={paciente.email} 
                 onChange={(e) => setPaciente({...paciente, email: e.target.value})} 
+                required
             />
             <input 
                 type="tel" 
                 placeholder="Teléfono" 
                 value={paciente.telefono} 
                 onChange={(e) => setPaciente({...paciente, telefono: e.target.value})} 
+                required
             />
             
             <div className="grupo-botones">
